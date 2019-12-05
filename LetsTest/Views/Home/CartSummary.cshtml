@@ -1,0 +1,64 @@
+﻿@using LetsTest.Models
+@{
+    ViewBag.Title = "CartSummary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Session["CartItem"] == null)
+{
+    <div>
+        <h4>Your Cart is Empty.</h4>
+    </div>
+
+}
+else
+{
+    <div class="col">
+        <div class="container ">
+            <h4 class="text-center">Shopping cart Summary</h4>
+            <div class="container">
+                @{
+                    int Total = 0;
+                    int TotalQ = 0;
+                }
+                @foreach (var prod in Session["CartItem"] as List<AddtoCart>)
+                {
+                    int lineTotal = Convert.ToInt32(prod.Quantity * prod.UnitPrice);
+                    Total = Convert.ToInt32(@Total + lineTotal);
+
+                    TotalQ += prod.Quantity;
+
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-action ">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@prod.ItemName</h5>
+                                <div>
+                                    <button type="button" class="btn btn-dark btn-sm btn-clickminus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">-</button>
+                                    <input id="quant" style="width:30px; border-radius:50%; text-align:center; background-color:gray; border:none; color:white" name="Quantity" type="text" placeholder="@prod.Quantity" value="@prod.Quantity" />
+                                    <button type="button" class="btn btn-dark btn-sm btn-clickplus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">+</button>
+                                </div>
+                            </div>
+                            <p class="mb-1">@prod.StoreName</p>
+                            <input id="linestotal" class="mb-1 value" style="font-weight:bold; border:none; width:70px" value="@lineTotal" />
+                            @Html.Hidden("price", prod.UnitPrice, new { @id = "price" })
+                        </div>
+                    </div>
+                    @Html.Hidden("Product_ID", @prod.ItemId);
+                }
+                <a href="#" class="list-group-item list-group-item-action ">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Total Amount</h5>
+                        <input id="totall" name="Amount" style="border:none;font-weight:bolder;text-align:right;font-size:larger" value="@Total" />
+                    </div>
+                </a>
+
+                @Html.Hidden("TotalQuantity", TotalQ)
+
+
+            </div>
+        </div>
+    </div>
+    <a type="button" href="/Home/CheckOutdetails">Continue to CheckOut</a>
+
+    <br />
+}

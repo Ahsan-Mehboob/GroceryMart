@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="w3l_banner_nav_right">
+    <section class="slider">
+        <div class="flexslider">
+            <ul class="slides">
+                <li>
+                    <div class="w3l_banner_nav_right_banner">
+                        <h3>Make your <span>food</span> with Spicy.</h3>
+                        <div class="more">
+                            <a href="~/Home/Products" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="w3l_banner_nav_right_banner1">
+                        <h3>Make your <span>food</span> with Spicy.</h3>
+                        <div class="more">
+                            <a href="~/Home/Products" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="w3l_banner_nav_right_banner2">
+                        <h3>upto <i>50%</i> off.</h3>
+                        <div class="more">
+                            <a href="~/Home/Products" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <!-- flexSlider -->
+    <link rel="stylesheet" href="~/css/flexslider.css" type="text/css" media="screen" property="" />
+    <script defer src="~/js/jquery.flexslider.js"></script>
+    <script type="text/javascript">
+        $(window).load(function () {
+            $('.flexslider').flexslider({
+                animation: "slide",
+                start: function (slider) {
+                    $('body').removeClass('loading');
+                }
+            });
+        });
+    </script>
+    <!-- //flexSlider -->
+</div>
+
+<!-- banner -->
+<div class="banner_bottom">
+    <div class="wthree_banner_bottom_left_grid_sub">
+    </div>
+    <div class="wthree_banner_bottom_left_grid_sub1">
+        <div class="col-md-4 wthree_banner_bottom_left">
+            <div class="wthree_banner_bottom_left_grid">
+                <img src="~/images/4.jpg" alt=" " class="img-responsive" />
+                <div class="wthree_banner_bottom_left_grid_pos">
+                    <h4>Discount Offer <span>25%</span></h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 wthree_banner_bottom_left">
+            <div class="wthree_banner_bottom_left_grid">
+                <img src="~/images/5.jpg" alt=" " class="img-responsive" />
+                <div class="wthree_banner_btm_pos">
+                    <h3>introducing <span>best store</span> for <i>groceries</i></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 wthree_banner_bottom_left">
+            <div class="wthree_banner_bottom_left_grid">
+                <img src="~/images/6.jpg" alt=" " class="img-responsive" />
+                <div class="wthree_banner_btm_pos1">
+                    <h3>Save <span>Upto</span> $10</h3>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="clearfix"> </div>
+</div>
+<!-- top-brands -->
+<div class="top-brands">
+        <div class="container">
+            <h3>Hot Offers</h3>
+            <div class="agile_top_brands_grids">
+                @foreach (var items in Model)
+                {
+                    <div class="col-md-3 top_brand_left">
+                        <div class="hover14 column">
+                            <div class="agile_top_brand_left_grid">
+                                <div class="agile_top_brand_left_grid1">
+                                    <figure>
+                                        <div class="snipcart-item block">
+                                            <div class="snipcart-thumb">
+                                                <a href="~/Single/SingleProduct/@items.ID"><img title=" " alt=" " src="@Url.Content(items.IMAGE1)" /></a>
+                                                <p style="background-color:blueviolet; color:whitesmoke; border-radius:20px; text-align:center; width:75%; font-weight:400px; margin-left:25px">@items.STORE</p>
+                                                <p style="font-weight:bold; font-size: 1.0rem">@items.NAME</p>
+                                                <h4 style="font-weight:bold; font-size: 1.0rem">Rs @items.PRICE</h4>
+                                            </div>
+                                            <div class="snipcart-details top_brand_home_details">
+
+                                                <input type="button" name="AddToCart" value="Add to Cart" class="btn btn-primary" itemid="@items.PRODUCT_ID" id="btnAddToCart" onclick="AddToCart(this)" />
+                                            </div>
+                                        </div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+<!-- //top-brands -->
+
+<script type="text/javascript">
+    function AddToCart(item) {
+        var itemId = $(item).attr("itemid");
+        var formData = new FormData();
+        formData.append("ItemId", itemId);
+        var count = 0;
+        $.ajax({
+            async: true,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
+            url: '/Home/Index',
+            success: function (data) {
+                if (data.Success) {
+                    $("#cartItem").text("Cart(" + data.Counter + ")");
+                }
+            },
+            error: function () {
+                alert("There is some Problem.");
+            }
+        });
+    }
+</script>

@@ -1,0 +1,46 @@
+﻿@using LetsTest.Models
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (Session["UserName"] != null)
+    {
+        Response.Redirect(Url.Action("Index", "Home", new { username = Session["UserName"].ToString() }));
+    }
+    AlertModel alertMessage = TempData["AlertMessage"] as AlertModel;
+
+}
+
+<div class="w3l_banner_nav_right">
+    @if (alertMessage != null)
+    {
+        @Html.Partial("~/Views/Shared/_AlertView.cshtml", alertMessage)
+    }
+    <div class="w3_login">
+        <h3>Log In</h3>
+        <div class="w3_login_module">
+            <div class="module form-module">
+                <div class="toggle">
+                    <i class="fa fa-times fa-pencil"></i>
+                </div>
+                <div class="form">
+                    <h2>Login to your account</h2>
+                    <form action="/LoginAndRegister/Login" method="post">
+                        <input id="Username" type="text" name="NAME" placeholder="Username" required="">
+                        <span id="user" class="text-danger font-weight-bold"> </span>
+                        <input id="Password" type="password" name="PASSWORD" placeholder="Password" required="" autocomplete="off">
+                        <span id="passwords" class="text-danger font-weight-bold"> </span>
+                        @*<input type="checkbox" name="RememberMe" value="RememberMe" />
+                        <p style="display:inline">Remember me</p>*@
+                        <input id="Login" type="submit" value="Login"><hr />
+                        <p style="display:inline">Not a member?</p>
+                        <a href="/LoginAndRegister/Register"> Click here to Signup </a>
+                    </form>
+                </div>
+                <div class="cta"><a href="/LoginAndRegister/ForgetPassword" id="forgetpassword">Forgot your password?</a></div>
+            </div>
+        </div>
+    </div>
+    <!-- //login -->
+</div>
+<div class="clearfix"></div>

@@ -1,0 +1,414 @@
+﻿@using LetsTest.Models
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GroceryMart.pk</title>
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Grocery Store Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script type="application/x-javascript">
+        addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+               function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+    <!-- //custom-theme -->
+    <!-- Owl-carousel-CSS -->
+    <link href="~/fonts.googleapis.com/css?family=Montserrat:100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800"
+          rel="stylesheet">
+    <link href="~/fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800" rel="stylesheet">
+
+    <link href="~/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="~/css/shop.css" type="text/css" media="screen" property="" />
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="~/css/style7.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="~/css/easy-responsive-tabs.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" type="text/css" href="~/css/jquery-ui1.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
+    <!-- font-awesome icons -->
+    <link href="~/css/font-awesome.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- //font-awesome icons -->
+    <!-- js -->
+    <script src="~/js/jquery-1.11.1.min.js"></script>
+    <!-- //js -->
+    <link href='//fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+    <!-- start-smoth-scrolling -->
+    <script type="text/javascript" src="~/js/move-top.js"></script>
+    <script type="text/javascript" src="~/js/easing.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+                $('html,body').animate({ scrollTop: $(this.hash).offset().top }, 1000);
+            });
+        });
+    </script>
+</head>
+<body>
+    @*<div class="modal fade   modal-lg" style="top:40px" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog-centered modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="text-center">Shopping cart Items</h4>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @if (Session["CartItem"] == null)
+                    {
+                        <div class="modal-body">
+                            <h4>Your Cart is Empty.</h4>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="modal-body">
+                            <div class="col">
+                                <div class="container ">
+                                    <h4 class="text-center">Shopping cart Summary</h4>
+                                    <div class="container" >
+                                        @{
+                                            int Total = 0;
+                                            int TotalQ = 0;
+                                        }
+                                        @foreach (var prod in Session["CartItem"] as List<AddtoCart>)
+                                        {
+                                            int lineTotal = Convert.ToInt32(prod.Quantity * prod.UnitPrice);
+                                            Total = Convert.ToInt32(@Total + lineTotal);
+
+                                            TotalQ += prod.Quantity;
+
+                                            <div class="list-group">
+                                                <div class="list-group-item list-group-item-action ">
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <h5 class="mb-1">@prod.ItemName</h5>
+                                                        <div>
+                                                            <button type="button" class="btn btn-dark btn-sm btn-clickminus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">-</button>
+                                                            <input id="quant" style="width:30px; border-radius:50%; text-align:center; background-color:gray; border:none; color:white" name="Quantity" type="text" placeholder="@prod.Quantity" value="@prod.Quantity" />
+                                                            <button type="button" class="btn btn-dark btn-sm btn-clickplus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">+</button>
+                                                        </div>
+                                                    </div>
+                                                    <p class="mb-1">@prod.StoreName</p>
+                                                    <input id="linestotal" class="mb-1 value" style="font-weight:bold; border:none; width:70px" value="@lineTotal" />
+                                                    @Html.Hidden("price", prod.UnitPrice, new { @id = "price" })
+                                                </div>
+                                            </div>
+                                            @Html.Hidden("Product_ID", @prod.ItemId);
+                                        }
+                                        @*<a href="#" class="list-group-item list-group-item-action ">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h5 class="mb-1">Total Amount</h5>
+                                                    <input id="totall" name="Amount" style="border:none;font-weight:bolder;text-align:right;font-size:larger" value="@Total" />
+                                                </div>
+                                            </a>
+
+                                        @Html.Hidden("TotalQuantity", TotalQ)
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="justify-content: space-between;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="#" class="list-group-item list-group-item-action d-inline " style="margin-right:20px;border:none">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <h6 class="mb-1">Total : </h6>
+                                        <input id="totall" name="Amount" style="border:none;font-weight:bolder;text-align:left;font-size:1rem; padding-left:10px" value="RS @Total" />
+                                    </div>
+                                </a>
+                                <div>
+                                    <button type="button" class="btn btn-success">Checkout</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>*@
+    <!-- header -->
+    <div class="agileits_header">
+        <div class="w3l_offers">
+            <a href="~/Home/Index">GroceryMart.pk !</a>
+        </div>
+        <div class="w3l_search">
+            <form>
+                <input id="text" type="text" name="text" required="" placeholder="Search a Product...">
+                <input id="search" type="button" value="">
+            </form>
+        </div>
+
+        <div class="product_list_header">
+            @if (Session["CartCounter"] == null)
+            {
+                <a href="/Home/CartSummary" class=" btn-warning" id="my_btn">
+                    <a href="/Home/CartSummary" class="d-inline" id="cartItem" style="font-size:0.6rem">View Your Cart</a>
+                    <i class="fa fa-shopping-cart"></i>
+                </a>
+            }
+            else
+            {
+                <a href="/Home/CartSummary" class=" btn-warning" id="my_btn">
+                    <a href="/Home/CartSummary" class="d-inline" id="cartItem" style="font-size:0.6rem">View Your Cart(@Session["CartCounter"])</a>
+                    <i class="fa fa-shopping-cart"></i>
+                </a>
+            }
+        </div>
+
+        @*<div class="product_list_header">
+                    @if (Session["CartCounter"] == null)
+                    {
+                        @Html.ActionLink("Cart", "CheckOutdetails", "Home", routeValues: null, htmlAttributes: new { id = "cartItem" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Cart(" + Session["CartCounter"] + ")", "CheckOutdetails", "Home", routeValues: null, htmlAttributes:new { id = "cartItem" });
+                    }
+            </div>*@
+        @if (Session["UserName"] != null)
+        {
+
+            <div class="w3l_header_right">
+
+                <ul>
+
+                    <li class="dropdown profile_details_drop">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Wellcome @Session["UserName"]<span class="caret" style="display:none"></span></a>
+                        <div class="mega-dropdown-menu">
+                            <div class="w3ls_vegetables">
+                                <ul class="dropdown-menu drp-mnu">
+                                    <li><a href="~/UserProfile/Profiles">Dashboard</a></li>
+                                    <li><a href="~/Home/OrderStatus">My Orders</a></li>
+                                    <li><a href="~/LoginAndRegister/Logout">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        }
+        else
+        {
+            <div class="w3l_header_right ">
+                <ul>
+                    <li class="dropdown profile_details_drop">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Wellcome to GroceryMart!<span class="caret" style="display:none"></span></a>
+                        <div class="mega-dropdown-menu">
+                            <div class="w3ls_vegetables">
+                                <ul class="dropdown-menu drp-mnu">
+                                    <li class="justify-content-center"><a class="text-center" href="~/LoginAndRegister/Login">Login</a></li>
+                                    <li class="justify-content-center"><a href="~/LoginAndRegister/Register">Sign Up</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        }
+        <div class="clearfix"> </div>
+    </div>
+
+    <!-- script-for sticky-nav -->
+    <script>
+        $(document).ready(function () {
+            var navoffeset = $(".agileits_header").offset().top;
+            $(window).scroll(function () {
+                var scrollpos = $(window).scrollTop();
+                if (scrollpos >= navoffeset) {
+                    $(".agileits_header").addClass("fixed");
+                } else {
+                    $(".agileits_header").removeClass("fixed");
+                }
+            });
+        });
+    </script>
+    <!-- //script-for sticky-nav -->
+    <!-- banner -->
+    <div class="banner">
+        @RenderBody()
+    </div>
+    <!-- newsletter -->
+    <div class="newsletter">
+        <div class="container">
+            <div class="w3agile_newsletter_left">
+                <h3>sign up for our newsletter</h3>
+            </div>
+            <div class="w3agile_newsletter_right">
+                <form action="#" method="post">
+                    <input type="email" name="Email" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}" required="">
+                    <input type="submit" value="subscribe now">
+                </form>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+    <!-- //newsletter -->
+    <!-- footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="col-md-3 w3_footer_grid">
+                <h3>information</h3>
+                <ul class="w3_footer_grid_list">
+                    <li><a href="~/Home/Events">Events</a></li>
+                    <li><a href="~/Home/About">About Us</a></li>
+                    <li><a href="~/Home/Services">Services</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 w3_footer_grid">
+                <h3>policy info</h3>
+                <ul class="w3_footer_grid_list">
+                    <li><a href="~/Home/FaQs">FAQ</a></li>
+                    <li><a href="~/Home/Privacy">privacy policy</a></li>
+                    <li><a href="~/Home/Privacy">terms of use</a></li>
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+
+    <!-- //footer -->
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".dropdown").hover(
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                    $(this).toggleClass('open');
+                },
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                    $(this).toggleClass('open');
+                }
+            );
+        });
+    </script>
+
+    <script>
+        $(document).ready(function ()
+        {
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: '@Url.Action(actionName: "CategoriesList", controllerName: "ApiData")',
+                    dataType: "html",
+                }).done(function (result) {
+                        $("#catlist").html(result);
+                    })
+        });
+    </script>
+
+    @*<script src="~/js/minicart.js"></script>
+        <script>
+            paypal.minicart.render();
+
+            paypal.minicart.cart.on('checkout', function (evt) {
+                var items = this.items(),
+                    len = items.length,
+                    total = 0,
+                    i,
+                data = [];
+                var cartList = {};
+
+
+                for (i = 0; i < len; i++) {
+                    cartList[i] ={
+                        ID: items[i].get("ID"),
+                        NAME: items[i].get('item_name'),
+                        AMOUNT : items[i].get('amount'),
+                        QUANTITY: items[i].get('quantity'),
+                        STORE_ID: items[i].get('STORE_ID'),
+                        IMAGE1: items[i].get('IMAGE1')
+                    }
+                }
+
+                $.ajax({
+                    url: '/CheckOut/CheckOutdetails/',
+                    data: { itemss: (cartList) },
+                    dataType: 'json',
+                    type: 'POST',
+                }).done(function (result) {
+                    window.location.href = '@Url.Action("CheckOutdetails","CheckOut")';
+                })
+
+                //if (total < 3) {
+                //    alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');
+                //    evt.preventDefault();
+                //}
+            });
+
+        </script>*@
+    <script>
+        $(document).ready(function () {
+            var readURL = function (input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('.avatar').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $(".file-upload").on('change', function () {
+                readURL(this);
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#text").keyup(function (event) {
+                if (event.keyCode === 13) {
+                    $("#search").click();
+                }
+            });
+            $('#search').click(function () {
+                var cid = $("#text").val();
+                $.ajax(
+                    {
+                        url: "/Products/Search/" + cid
+                    })
+                window.location.href = '@Url.Action("Search","Products",new { id = "CC"})'.replace("CC", cid);
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function AddToCart(item) {
+            var itemId = $(item).attr("itemid");
+            var formData = new FormData();
+            formData.append("ItemId", itemId);
+            var count = 0;
+            $.ajax({
+                async: true,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: formData,
+                url: '/Home/Index',
+                success: function (data) {
+                    if (data.Success) {
+                        //$("#cartitem").text("Cart("+data.Counter+")");
+
+                        $("#cartItem").text('View Your Cart(' + data.Counter + ')');
+                    }
+                },
+                error: function () {
+                    alert("There is some Problem.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

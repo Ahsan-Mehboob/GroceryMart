@@ -1,0 +1,102 @@
+﻿@model IEnumerable<LetsTest.Models.OrderStatus>
+@{
+    ViewBag.Title = "OrderStatus";
+    Layout = "~/Views/Shared/_ProfileLayout.cshtml";
+}
+
+<div class="container" style="margin-top: 5%;">
+    <h4 class="display-4">Order History</h4>
+    <div class="card w-100" style="margin-top: 20px;">
+        <div class="card-body">
+            @foreach (var m in Model)
+            {
+                string status;
+            <div style="border-bottom:2px solid black; padding:20px; margin-bottom:40px;">
+                <div class="d-flex justify-content-around">
+                    <h5 class="card-title d-inline" style="font-weight: bold;color: #ff4757;">Order #: @m.ID</h5>
+                    <h5 class="card-title d-inline" style="font-weight: bold;color: #e1b12c;">@m.CREATED_AT.ToShortDateString()</h5>
+                </div>
+                <div class="row" style="">
+                    <div class="col-md-6">
+                        <div class="" style="display:flex; flex-direction:row;">
+                            <h5>Customer Name: </h5><p>&nbsp;@m.CUSTOMERNAME</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="" style="display:flex; flex-direction:row;">
+                            <h5>Address: </h5><p>&nbsp;@m.STREETADDRESS</p>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row" style="">
+                    <div class="col-md-6">
+                        <div class="" style="display:flex; flex-direction:row;">
+                            <h5>Mobile Number: </h5><p>&nbsp;@m.PHONE</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="" style="display:flex; flex-direction:row;">
+                            <h5>City Name: </h5><p>&nbsp;@m.CITY</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row" style="">
+                    <div class="col-md-6">
+                        <div class="" style="display:flex; flex-direction:row;">
+                            <h5>Total Price: </h5><p>&nbsp;@m.AMOUNT</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        @if (m.ORDERSTATUS == "0")
+                        {
+                            status = "Order is Placed";
+                            <div class="" style="display:flex; flex-direction:row;">
+                                <h5>Order Status: </h5><p style="color:orangered">&nbsp;@status</p>
+                            </div>
+                        }
+                        else if (m.ORDERSTATUS == "1")
+                        {
+                            status = "Order is in Process";
+                            <div class="" style="display:flex; flex-direction:row;">
+                                <h5>Order Status: </h5><p style="color:blueviolet">&nbsp;@status</p>
+                            </div>
+                        }
+                        else
+                        {
+                            status = "Order Delivered";
+                            <div class="" style="display:flex; flex-direction:row;">
+                                <h5>Order Status: </h5><p style="color:green">&nbsp;@status</p>
+                            </div>
+
+                        }
+
+
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+                
+                
+               
+                
+                
+             
+                //<h5>Store Name: </h5><p>@m.NAME</p>
+              //  <a href="#" class="btn btn-danger">Cancel Order</a>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 

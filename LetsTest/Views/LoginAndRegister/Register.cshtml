@@ -1,0 +1,260 @@
+﻿@using LetsTest.Models
+@{
+    ViewBag.Title = "Signup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    AlertModel alertMessage = TempData["AlertMessage"] as AlertModel;
+}
+
+<div class="w3l_banner_nav_right">
+    <!-- login -->
+    @if (alertMessage != null)
+    {
+        @Html.Partial("~/Views/Shared/_AlertView.cshtml", alertMessage)
+    }
+    <div class="w3_login">
+        <h3>Sign Up</h3>
+        <div class="w3_login_module">
+            <div class="module form-module">
+                <div class="toggle">
+                    <i class="fa fa-times fa-pencil"></i>
+                </div>
+                <div class="form">
+                    <h2>Create an account</h2>
+                    <form action="/LoginAndRegister/Register" method="post" onsubmit="return validationregister()" id="myform">
+                        <input id="username" type="text" name="NAME" onblur="UserNameCheck();" placeholder="Username" required="">
+                        <span id="userss" class="text-danger font-weight-bold"> </span>
+                        <input id="password" type="password" name="PASSWORD" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required="">
+                        <span id="passwordss" class="text-danger font-weight-bold"> </span>
+                        <input id="confirmpassword" type="password" name="Confirm Password" placeholder="Confirm Password" required="">
+                        <span id="cpsss" class="text-danger font-weight-bold"> </span>
+                        <input id="textemail" type="email" name="EMAIL" onblur="Emailcheck();" placeholder="Email Address" required="">
+                        <span id="emailsss" class="text-danger font-weight-bold"> </span>
+                        <input id="phonenumber" type="text" name="CONTACT" onblur="PhoneNumberCheck();" placeholder="Phone Number" required="">
+                        <span id="phno" class="text-danger font-weight-bold"> </span>
+                        <input id="Register" type="submit" value="Register">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //login -->
+</div>
+<div class="clearfix"></div>
+
+<script>
+    $(document).ready(function () {
+        $("#userss").hide();
+        $("#passwordss").hide();
+        $("#cpsss").hide();
+        $("#emailsss").hide();
+        $("#phno").hide();
+
+        var user_err = true;
+        var password_err = true;
+        var confirmpassword_err = true;
+        var email_err = true;
+        var phno_err = true;
+
+        $("#username").keyup(function () {
+            username_check();
+        });
+
+        function username_check() {
+            var user_val = $("#username").val();
+
+            if (user_val == "" || user_val == null) {
+                $("#userss").show();
+                $("#userss").html("** Username Cannot be empty");
+                $("#userss").focus();
+                $("#userss").css("color", "red");
+                user_err = false;
+                return false;
+            }
+            else {
+                $("#userss").hide();
+            }
+
+            if (user_val.length < 6 || user_val.length > 20) {
+                $("#userss").show();
+                $("#userss").html("** Username must be between 6 to 20 characters.");
+                $("#userss").focus();
+                $("#userss").css("color", "red");
+                user_err = false;
+                return false;
+            }
+            else {
+                $("#userss").hide();
+            }
+        }
+
+        $("#password").keyup(function () {
+            Password_check();
+        });
+
+        function Password_check() {
+            var pass_val = $("#password").val();
+
+            if (pass_val == "" || pass_val == null) {
+                $("#passwordss").show();
+                $("#passwordss").html("** Please Enter the Password");
+                $("#passwordss").focus();
+                $("#passwordss").css("color", "red");
+                password_err = false;
+                return false;
+            }
+            else {
+                $("#passwordss").hide();
+            }
+
+            if (pass_val.length < 8 || pass_val.length > 20) {
+                $("#passwordss").show();
+                $("#passwordss").html("** Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters");
+                $("#passwordss").focus();
+                $("#passwordss").css("color", "red");
+                password_err = false;
+                return false;
+            }
+            else {
+                $("#passwordss").hide();
+            }
+        }
+
+        $("#confirmpassword").keyup(function () {
+            ConfirmPassword_check();
+        });
+
+        function ConfirmPassword_check() {
+            var conpass_val = $("#confirmpassword").val();
+            var pass_val = $("#password").val();
+
+
+            if (pass_val != conpass_val) {
+                $("#cpsss").show();
+                $("#cpsss").html("** Passwords are not matched");
+                $("#cpsss").focus();
+                $("#cpsss").css("color", "red");
+                confirmpassword_err = false;
+                return false;
+            }
+            else {
+                $("#cpsss").hide();
+            }
+        }
+
+        $("#textemail").keyup(function () {
+            Email_check();
+        });
+
+        function Email_check() {
+            var email_val = $("#textemail").val();
+
+            if (email_val == "" || email_val == null) {
+                $("#emailsss").show();
+                $("#emailsss").html("** Please Enter the Email");
+                $("#emailsss").focus();
+                $("#emailsss").css("color", "red");
+                email_err = false;
+                return false;
+            }
+            else {
+                $("#emailsss").hide();
+            }
+            var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            if (!expr.test(email_val)) {
+                $("#emailsss").show();
+                $("#emailsss").html("** Email is Invalid.");
+                $("#emailsss").focus();
+                $("#emailsss").css("color", "red");
+                email_err = false;
+                return false;
+            }
+            else {
+                $("#emailsss").hide();
+            }
+        }
+
+        $("#phonenumber").keyup(function () {
+            Phno_check();
+        });
+
+        function Phno_check() {
+            var phno_val = $("#phonenumber").val();
+
+            if (phno_val == "" || phno_val == null) {
+                $("#phno").show();
+                $("#phno").html("** Please Enter Your Mobile Number");
+                $("#phno").focus();
+                $("#phno").css("color", "red");
+                phno_err = false;
+                return false;
+            }
+            else {
+                $("#phno").hide();
+            }
+            var ph = /^[0-9]{11}$/;
+            if (!ph.test(phno_val)) {
+                $("#phno").show();
+                $("#phno").html("** Please enter the valid Mobile number.");
+                $("#phno").focus();
+                $("#phno").css("color", "red");
+                phno_err = false;
+                return false;
+            }
+            else {
+                $("#phno").hide();
+            }
+        }
+    });
+</script>
+<script>
+    function Emailcheck() {
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("IsEmailExist_F","LoginAndRegister")',
+            data: { email: $('#textemail').val() },
+            datatype: 'json',
+            success: function (data) {
+                if (data == 0)
+                    $("#emailsss").html('<font color="Green">Email is valid. </font>')
+                else if (data == 1)
+                    $("#emailsss").html('<font color="#B94A4D">You are already registered with this email. </font>')
+               }
+        });
+    }
+</script>
+
+<script>
+    function UserNameCheck() {
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("IsUserExist_F", "LoginAndRegister")',
+            data: { username: $('#username').val() },
+            datatype: "json",
+            success: function (data) {
+                if (data == 0)
+                    $('#userss').html('<font color="Green">UserName is Valid</font>')
+                else if (data == 2)
+                    $('#userss').html('<font color="#B94A4D">Username is already exist.</font>')
+            },
+            traditional: true
+        });
+    }
+</script>
+
+<script>
+    function PhoneNumberCheck() {
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("IsContactExist_F", "LoginAndRegister")',
+            data: { contact: $('#phonenumber').val() },
+            datatype: "json",
+            success: function (data) {
+                if (data == 0)
+                    $('#phno').html('<font color="Green">Phone Number is Valid</font>')
+                else if (data == 1)
+                    $("#phno").html('<font color="#B94A4D">Phone Number is already exist. </font>')
+            },
+            traditional: true
+        });
+    }
+</script>

@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+}
+
+@{
+    ViewBag.Title = "CategoriesList";
+}
+
+@foreach (var category in ViewBag.allCategories)
+{
+    <ul class="nav navbar-nav nav_1">
+        <li>
+            <a>@category.categoryName</a>
+            <ul id="sub" class="subcategories">
+                @if (category.Subcategory.Count > 0)
+                {
+                    for (int i = 0; i < category.Subcategory.Count; i++)
+                    {
+                        <li id=@category.Subcategory[i].SubCatogaryID value=@category.Subcategory[i].SubCatogaryID>
+                            <a href="~/Products/Productslist/@category.Subcategory[i].SubCatogaryID">@category.Subcategory[i].SubCatogaryName</a>
+                        </li>
+                    }
+                }
+
+            </ul>
+        </li>
+    </ul>
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sub li").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/Products/Productslist/' + this.id
+                })
+            })
+        });
+    </script>

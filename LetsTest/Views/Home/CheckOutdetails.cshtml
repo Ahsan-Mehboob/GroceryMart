@@ -1,0 +1,281 @@
+﻿@model IEnumerable<LetsTest.Models.AddtoCart>
+@using LetsTest.Models
+@{
+    ViewBag.Title = "CheckOutdetails";
+    Layout = "~/Views/Shared/_ProfileLayout.cshtml";
+    AlertModel alertMessage = TempData["AlertMessage"] as AlertModel;
+}
+
+@using (Html.BeginForm("AddToOrder", "Home", FormMethod.Post))
+{
+    <div class="container" style="margin-top: 5%;">
+        <h4 class="display-4" style="color: white;text-align: center;padding: 10px;background: rgb(2,0,36);background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(27,133,38,1) 100%);">Checkout Page</h4>
+        @if (alertMessage != null)
+        {
+            @Html.Partial("~/Views/Shared/_AlertView.cshtml", alertMessage)
+        }
+        <div style="display:flex;flex-direction:column; justify-content:center;">
+            <a href="~/Home/ListAddress" type="button" style="width:48.5%;align-self:center;margin-bottom:1%" class="btn btn-success btn-lg align-items-center">Select from existing Address</a>
+            <div class="row">
+                <div class="col-md-6 center-block">
+                    <div class="card">
+                        <div class="card-header bg-dark">
+                            <h4 class="display-4" style="font-size: 1.2rem;color: aliceblue;">
+                                Products Summary
+                            </h4>
+                        </div>
+                        @{
+                            int Total = 0;
+                            int TotalQ = 0;
+                        }
+                        @foreach (var prod in Model)
+                        {
+                            int lineTotal = Convert.ToInt32(prod.Quantity * prod.UnitPrice);
+                            Total = Convert.ToInt32(@Total + lineTotal);
+
+                            TotalQ += prod.Quantity;
+                            <div class="card-body">
+                                <ul class="list-group mb-10">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <h5>@prod.ItemName</h5>
+
+                                        <input id="quant" style="width:30px; border-radius:50%; text-align:center; background-color:gray; border:none; color:white" name="Quantity" type="text" placeholder="@prod.Quantity" value="@prod.Quantity" />
+
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" style="font-weight:600">
+
+                                        <p class="mb-1">@prod.StoreName</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            @Html.Hidden("price", prod.UnitPrice, new { @id = "price" });
+                            @Html.Hidden("Product_ID", @prod.ItemId);
+                        }
+                        <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 20px;">
+                            <button type="button" class="btn btn-light">Total Amount</button>
+                            <input class="form-control" id="totall" name="Amount" style="width:20%" value="@Total" />
+                        </div>
+
+                        @*<div>
+                            <div class="" style="margin-top: 20px;display: flex; flex-direction: row; justify-content: space-between;">
+                                <div class="form-group mb-2" style="width:80%">
+                                    <label for="staticEmail2" class="sr-only">Voucher Code</label>
+                                    <input style="border: 1px solid black;" type="text" class="form-control-plaintext" id="staticEmail2" value="">
+                                </div>
+
+                                <button id="voucher" type="submit" class="btn btn-success mb-2">Enter Code</button>
+                            </div>
+                        </div>*@
+                        @Html.Hidden("TotalQuantity", TotalQ)
+
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block mb-2">Place Order</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+@*<div>
+    <div class="" style="margin-top: 20px;display: flex; flex-direction: row; justify-content: space-between;">
+        <div class="form-group mb-2" style="width:80%">
+            <label for="staticEmail2" class="sr-only">Voucher Code</label>
+            <input style="border: 1px solid black;" type="text" class="form-control-plaintext" id="staticEmail2" value="">
+        </div>
+
+        <button id="voucher" type="submit" class="btn btn-success mb-2">Enter Code</button>
+    </div>
+</div>*@
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+
+<!-- js -->
+<script src="~/js/jquery-1.11.1.min.js"></script>
+<!--quantity-->
+
+
+<script>
+    $('.btn-clickplus').on('click', function () {
+        var q = $(this).parent().find('#quant').val();
+        q++;
+        $(this).parent().find('#quant').val(q);
+
+        var priceT = $(this).parents().find('#price').val();
+        var total = q * priceT;
+        debugger;
+
+        $(this).offsetParent().find('#linestotal').val(total);
+        var t = $(this).Parent().find('#totall').val();
+        var summ = parseInt(priceT) + parseInt(t);
+        $(this).parent().find("#totall").val(summ);
+        debugger;
+    });
+
+    $('.btn-clickminus').on('click', function () {
+        var q = $(this).parent().find('#quant').val();
+        q--;
+        $(this).parent().find('#quant').val(q);
+    });
+</script>
+<!--quantity-->
+<script>
+    $(document).ready(function (c) {
+        $('.close1').on('click', function (c) {
+            $('.rem1').fadeOut('slow', function (c) {
+                $('.rem1').remove();
+            });
+        });
+    });
+</script>
+
+<!-- //js -->
+<!-- script-for sticky-nav -->
+<script>
+    $(document).ready(function () {
+        var navoffeset = $(".agileits_header").offset().top;
+        $(window).scroll(function () {
+            var scrollpos = $(window).scrollTop();
+            if (scrollpos >= navoffeset) {
+                $(".agileits_header").addClass("fixed");
+            } else {
+                $(".agileits_header").removeClass("fixed");
+            }
+        });
+
+    });
+</script>
+<!-- //script-for sticky-nav -->
+<!-- start-smoth-scrolling -->
+<script type="text/javascript" src="~/js/move-top.js"></script>
+<script type="text/javascript" src="~/js/easing.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".scroll").click(function (event) {
+            event.preventDefault();
+            $('html,body').animate({ scrollTop: $(this.hash).offset().top }, 1000);
+        });
+    });
+</script>
+
+@*<script>
+
+            function getAllData() {
+                var data = [];
+                var productsID = [];
+                $('tbody tr ').each(function () {
+                    var Products_id = $(this).find('#prod_id').text();
+
+                    var AmountAfterDiscount = $(this).find('#discount').text();
+                    var Quantity = $(this).find('#quant').text();
+                    var Total_Quantity = $('#totalQuantity').val();
+                    var alldata = {
+                        'Prod_id': Products_id,
+                        //  'AmountAfterDiscount': AmountAfterDiscount,
+                        'Quantity': Quantity,
+                        // 'Total_Quantity': Total_Quantity,
+                    }
+                    data.push(alldata);
+
+                });
+                console.log(data);
+                debugger;
+                return data;
+            }
+
+            $('#btnsubmit').click(function () {
+                var datavalue = getAllData();
+                things = JSON.stringify({ 'things': datavalue });
+                debugger;
+                $.ajax({
+                    url: '/Home/AddToOrder',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: things
+                });
+            });
+        </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".btnsubmit").click(function () {
+                swal("Good job!", "Your Order has been successfully placed!", "success");
+            });
+        });
+    </script>*@
+
+<script>
+    $(document).ready(function () {
+        $("#userss").hide();
+        $("#phno").hide();
+
+        var user_err = true;
+        var phno_err = true;
+
+        $("#username").keyup(function () {
+            username_check();
+        });
+
+        function username_check() {
+            var user_val = $("#username").val();
+            var alphabets = /^[a-z][a-z\s]*$/;
+            if (!alphabets.test(user_val)) {
+                $("#userss").show();
+                $("#userss").html("** Only Alphabets are allowed.");
+                $("#userss").focus();
+                $("#userss").css("color", "red");
+                user_err = false;
+                return false;
+            }
+            else {
+                $("#userss").hide();
+            }
+        }
+
+        $("#phonenumber").keyup(function () {
+            Phno_check();
+        });
+
+        function Phno_check() {
+            var phno_val = $("#phonenumber").val();
+
+            if (phno_val == "" || phno_val == null) {
+                $("#phno").show();
+                $("#phno").html("** Please Enter Your Mobile Number");
+                $("#phno").focus();
+                $("#phno").css("color", "red");
+                phno_err = false;
+                return false;
+            }
+            else {
+                $("#phno").hide();
+            }
+            var ph = /^[0-9]{11}$/;
+            if (!ph.test(phno_val)) {
+                $("#phno").show();
+                $("#phno").html("** Please enter the valid Mobile number.");
+                $("#phno").focus();
+                $("#phno").css("color", "red");
+                phno_err = false;
+                return false;
+            }
+            else {
+                $("#phno").hide();
+            }
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#voucher").click(function () {
+            var vouchercode = $("#staticEmail2").val();
+            $.ajax({
+                url: "/Home/VoucherCode?promo=" + vouchercode
+            });
+        });
+    });
+</script>
