@@ -1,0 +1,234 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+        #map {
+            height: 300px;
+            width: 750px;
+        }
+    </style>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaqHbH8JKxbLNmV9dbUhCJsTS3sjOvoeE&callback=initMap"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+        x = navigator.geolocation;
+        x.getCurrentPosition(initMap);
+
+        //function success(position) {
+        function initMap(position) {
+            var MapMarkers = [];
+            var myLat = position.coords.latitude;
+            var myLong = position.coords.longitude;
+
+            var coords = new google.maps.LatLng(myLat, myLong);
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: coords,
+                zoom: 16
+            });
+            var marker = new google.maps.Marker({ map: map, position: coords });
+             var contentString = '<div id="content">' +
+                '<div id="siteNotice">' +
+                '</div>' +
+                '<h1 id="firstHeading" class="firstHeading">My location</h1>' +
+                '</div>';
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+            google.maps.event.addListener(marker, 'mouseover', (function (marker, i) {
+                return function () {
+                    infowindow.open(map, marker);
+                }
+            })(marker));
+            google.maps.event.addListener(marker, 'mouseout', (function (marker, i) {
+                return function () {
+                    infowindow.close();
+                }
+            })(marker));
+            var circle;
+            $('#customRange1').change(function () {
+                var new_rad = $(this).val();
+                var rad = new_rad * 10;
+                for (j = 0; j < MapMarkers.length; j++) {
+                    if (MapMarkers[j]) {
+                        MapMarkers[j].setMap(null);
+                        MapMarkers[j] = null;
+                    }
+                }
+
+                $.get("@Url.Action("GetAllLocations", "Map")", function (stores, status) {
+                  var contentString = [];
+                    var infowindow = [];
+                    var marker = [];
+                    for (var i = 0; i < stores.length; i++) {
+                        var marker_lat_lng = new google.maps.LatLng(parseFloat(stores[i].LATITUDE), parseFloat(stores[i].LONGITUDE));
+                        var distance_from_location = google.maps.geometry.spherical.computeDistanceBetween(coords, marker_lat_lng);
+
+                        if (distance_from_location < rad) {
+                            marker[i] = new google.maps.Marker({
+                                position: marker_lat_lng,
+                                map: map
+                            });
+                            contentString[i] = '<div id="content">' +
+                                '<div id="siteNotice">' +
+                                '</div>' +
+                                '<h1 id="firstHeading" class="firstHeading">' + stores[i].NAME + '</h1>' +
+                                '<div id="bodyContent">' +
+                                '<p>' + stores[i].TYPE_NAME + '</p>' +
+                                '</div>' +
+                                '<div><a href="#">Visit stores</a></div>'
+                            '</div>' +
+                                '</div>';
+
+                            infowindow[i] = new google.maps.InfoWindow({
+                                content: contentString[i]
+                            });
+                            var mdl = marker[i];
+                            google.maps.event.addListener(marker[i], 'mouseover', (function (mdl, i) {
+                                return function () {
+                                    infowindow[i].open(map, marker[i]);
+                                }
+                            })(marker[i], i));
+                            google.maps.event.addListener(marker[i], 'mouseout', (function (mdl, i) {
+                                return function () {
+                                    infowindow[i].close();
+                                }
+                            })(marker[i], i));
+                            MapMarkers.push(marker[i]);
+                        }
+                    }
+                });
+                if (!circle || !circle.setRadius) {
+                    circle = new google.maps.Circle({
+                        map: map,
+                        radius: rad,
+                        strokeColor: '#3390FF',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 1,
+                        fillColor: '#3390FF',
+                        fillOpacity: 0.30
+                    });
+                    circle.bindTo('center', marker, 'position');
+                } else circle.setRadius(rad);
+            });
+        }
+    </script>
+</head>
+<body>
+    <input type="range" class="custom-range" id="customRange1" value="10">
+    <div id="map"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*var mapOptions = {
+            zoom: 12,
+            center: coords,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        var marker = new google.maps.Marker({ map: map, position: coords });
+        var contentString = '<div id="content">' +
+            '<div id="siteNotice">' +
+            '</div>' +
+            '<h1 id="firstHeading" class="firstHeading">My location</h1>' +
+            '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        google.maps.event.addListener(marker, 'mouseover', (function (marker, i) {
+            return function () {
+                infowindow.open(map, marker);
+            }
+        })(marker));
+        google.maps.event.addListener(marker, 'mouseout', (function (marker, i) {
+            return function () {
+                infowindow.close();
+            }
+        })(marker));
+        $.get("@Url.Action("GetAllLocations", "Home")", function (stores, status) {
+            var marker = [];
+            var contentString = [];
+            var infowindow = [];
+            for (var i = 0; i < stores.length; i++) {
+                marker[i] = new google.maps.Marker({
+                    position: { lat: parseFloat(stores[i].LATITUDE), lng: parseFloat(stores[i].LONGITUDE) },
+                    map: map
+                });
+                contentString[i] = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    '<h1 id="firstHeading" class="firstHeading">' + stores[i].NAME + '</h1>' +
+                    '<div id="bodyContent">' +
+                    '<p>' + stores[i].TYPE_NAME + '</p>' +
+                    '</div>' +
+                    '<div><a href="#">Visit stores</a></div>'
+                    '</div>' +
+                    '</div>';
+
+                infowindow[i] = new google.maps.InfoWindow({
+                    content: contentString[i]
+                });
+                var mdl = marker[i];
+                google.maps.event.addListener(marker[i], 'mouseover', (function (mdl, i) {
+                    return function () {
+                        infowindow[i].open(map, marker[i]);
+                    }
+                })(marker[i], i));
+                google.maps.event.addListener(marker[i], 'mouseout', (function (mdl, i) {
+                    return function () {
+                        infowindow[i].close();
+                    }
+                })(marker[i], i));
+            }
+        });
+        var circle;
+        $("#customRange1").change(function () {
+            var radis = $(this).val();
+            var rad = radis * 1000;
+            if (!circle || !circle.setRadius) {
+                cirlce = new google.maps.Circle({
+                    map: map,
+                    center: coords,
+                    radius: 500,
+                    strokeColor: '#800000',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 1,
+                    fillColor: '#C64D45',
+                    fillOpacity: 0.5
+                });
+                circle.bindTo('center', marker, 'position');
+            }else circle.setRadius(rad);
+        });
+    }
+    function failure() { }*@

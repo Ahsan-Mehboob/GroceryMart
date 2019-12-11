@@ -1,64 +1,142 @@
 ﻿@using LetsTest.Models
 @{
     ViewBag.Title = "CartSummary";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_ProfileLayout.cshtml";
+    AlertModel alertMessage = TempData["AlertMessage"] as AlertModel;
 }
 
-@if (Session["CartItem"] == null)
+@if (alertMessage != null)
 {
-    <div>
-        <h4>Your Cart is Empty.</h4>
-    </div>
-
+    @Html.Partial("~/Views/Shared/_AlertView.cshtml", alertMessage)
 }
-else
+@using (Html.BeginForm("newCart", "Home", FormMethod.Post))
 {
-    <div class="col">
-        <div class="container ">
-            <h4 class="text-center">Shopping cart Summary</h4>
-            <div class="container">
-                @{
-                    int Total = 0;
-                    int TotalQ = 0;
-                }
-                @foreach (var prod in Session["CartItem"] as List<AddtoCart>)
-                {
-                    int lineTotal = Convert.ToInt32(prod.Quantity * prod.UnitPrice);
-                    Total = Convert.ToInt32(@Total + lineTotal);
+    if (Session["CartItem"] == null)
+    {
+        <div style="margin-top:10%">
+            <h4>Your Cart is Empty.</h4>
+        </div>
 
-                    TotalQ += prod.Quantity;
+    }
+    else
+    {
+        <div class="col" style="margin-top:10%">
+            <div class="container ">
+                <h4 class="text-center" style="padding-bottom:20px">Shopping cart Summary</h4>
+                <div class="container">
+                    @{
+                        int Total = 0;
+                        int TotalQ = 0;
+                    }
+                    @foreach (var prod in Session["CartItem"] as List<AddtoCart>)
+                    {
+                        int lineTotal = Convert.ToInt32(prod.Quantity * prod.UnitPrice);
+                        Total = Convert.ToInt32(@Total + lineTotal);
 
-                    <div class="list-group">
-                        <div class="list-group-item list-group-item-action ">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">@prod.ItemName</h5>
-                                <div>
-                                    <button type="button" class="btn btn-dark btn-sm btn-clickminus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">-</button>
-                                    <input id="quant" style="width:30px; border-radius:50%; text-align:center; background-color:gray; border:none; color:white" name="Quantity" type="text" placeholder="@prod.Quantity" value="@prod.Quantity" />
-                                    <button type="button" class="btn btn-dark btn-sm btn-clickplus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">+</button>
+                        TotalQ += prod.Quantity;
+
+                        <div class="list-group">
+                            <div class="list-group-item list-group-item-action ">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <input class="mb-1" name="ItemName" value="@prod.ItemName" style="text-align:center; background-color:gray; border:none; color:white" />
+                                    <div>
+                                        <button type="button" class="btn btn-dark btn-sm btn-clickminus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">-</button>
+                                        <input id="quant" style="width:30px; border-radius:50%; text-align:center; background-color:gray; border:none; color:white" name="Quantity" type="text" placeholder="@prod.Quantity" value="@prod.Quantity" />
+                                        <button type="button" class="btn btn-dark btn-sm btn-clickplus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">+</button>
+                                    </div>
                                 </div>
+                                <input class="mb-1" name="StoreName" value="@prod.StoreName" style="text-align:center; background-color:gray; border:none; color:white" />
+                                <input id="linestotal" name="lineTotal" class="mb-1 value" style="font-weight:bold; border:none; width:70px" value="Rs. @lineTotal" />
+                                @Html.Hidden("price", prod.UnitPrice, new { @id = "price" })
                             </div>
-                            <p class="mb-1">@prod.StoreName</p>
-                            <input id="linestotal" class="mb-1 value" style="font-weight:bold; border:none; width:70px" value="@lineTotal" />
-                            @Html.Hidden("price", prod.UnitPrice, new { @id = "price" })
                         </div>
-                    </div>
-                    @Html.Hidden("Product_ID", @prod.ItemId);
-                }
-                <a href="#" class="list-group-item list-group-item-action ">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Total Amount</h5>
-                        <input id="totall" name="Amount" style="border:none;font-weight:bolder;text-align:right;font-size:larger" value="@Total" />
-                    </div>
-                </a>
+                        @Html.Hidden("Product_ID", @prod.ItemId);
+                    }
+                    <a href="#" class="list-group-item list-group-item-action ">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Total Amount</h5>
+                            <input id="totall" name="Amount" style="border:none;font-weight:bolder;text-align:right;font-size:larger" value="@Total" />
+                        </div>
+                    </a>
 
-                @Html.Hidden("TotalQuantity", TotalQ)
+                    @Html.Hidden("TotalQuantity", TotalQ)
 
 
+                </div>
             </div>
         </div>
-    </div>
-    <a type="button" href="/Home/CheckOutdetails">Continue to CheckOut</a>
-
-    <br />
+        <br />
+        <div class="d-flex align-items-end justify-content-end">
+            <button type="submit" class="btn btn-success btn-block  check-out" style="margin-right:10%;width:25%;">Continue To CheckOut</button>
+        </div>
+        
+        <br />
+    }
 }
+
+<!-- js -->
+<script src="~/js/jquery-1.11.1.min.js"></script>
+<!--quantity-->
+
+
+<script>
+    $('.check-out').on('click', function (e) {
+        
+        debugger;
+        var total = $('#totall').val();
+        if (total == 0) {
+            $(this).remove();
+            $('.col').html('<h4 style="text-align:center">Your Shopping Cart is empty !!</h4>')
+        }
+        return true
+    })
+   
+    
+    $('.btn-clickplus').on('click', function () {
+        var q = $(this).parent().find('#quant').val();
+        $(".btn-clickminus").attr("disabled", false);
+        q++;
+
+        $(this).parent().find('#quant').val(q);
+
+        var priceT = $(this).parents().find('#price').val();
+        var total = q * priceT;
+        //$(this).offsetParent().find('#linestotal').val(total);
+        var t = $('#totall').val();
+        var summ = parseInt(priceT) + parseInt(t);
+        $('#totall').val(summ);
+    });
+
+    $('.btn-clickminus').on('click', function () {
+        $(".btn-clickminus").attr("disabled", false);
+        var q = $(this).next().val();
+        if (q > 1) {
+            q--;
+        }
+        else {
+            debugger;
+            //$(this).attr("disabled", true);
+            $(this).closest('.list-group-item').remove();
+            q = "0";
+            
+            $(this).parent().find('#quant').val(q);
+        }
+        $(this).parent().find('#quant').val(q);
+        var priceT = $(this).parents().find('#price').val();
+        var total = q * priceT;
+        //$(this).offsetParent().find('#linestotal').val(total);
+        var t = $('#totall').val();
+        var summ = parseInt(t) - parseInt(priceT);
+        $('#totall').val(summ);
+    });
+</script>
+<!--quantity-->
+<script>
+    $(document).ready(function (c) {
+        $('.close1').on('click', function (c) {
+            $('.rem1').fadeOut('slow', function (c) {
+                $('.rem1').remove();
+            });
+        });
+    });
+</script>

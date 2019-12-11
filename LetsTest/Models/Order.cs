@@ -23,5 +23,6 @@ namespace LetsTest.Models
         public int city_id { get; set; }
         public string STREETADDRESS { get; set; }
         public int ShippingID { get; set; }
+        public int STORE_ID { get; set; }
     }
 }

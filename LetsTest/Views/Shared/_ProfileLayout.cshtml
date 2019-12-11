@@ -1,4 +1,4 @@
-﻿@using LetsTest.Models
+﻿@*@using LetsTest.Models
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +21,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link href="~/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
     <link rel="stylesheet" href="~/css/shop.css" type="text/css" media="screen" property="" />
     <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="~/css/style7.css" rel="stylesheet" type="text/css" media="all" />
     <link href="~/css/easy-responsive-tabs.css" rel='stylesheet' type='text/css' />
     <link rel="stylesheet" type="text/css" href="~/css/jquery-ui1.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -53,89 +52,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </script>
 </head>
 <body>
-    @*<div class="modal fade   modal-lg" style="top:40px" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-            <div class="modal-dialog-centered modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="text-center">Shopping cart Items</h4>
-
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    @if (Session["CartItem"] == null)
-                    {
-                        <div class="modal-body">
-                            <h4>Your Cart is Empty.</h4>
-                        </div>
-
-                    }
-                    else
-                    {
-                        <div class="modal-body">
-                            <div class="col">
-                                <div class="container ">
-                                    <h4 class="text-center">Shopping cart Summary</h4>
-                                    <div class="container" >
-                                        @{
-                                            int Total = 0;
-                                            int TotalQ = 0;
-                                        }
-                                        @foreach (var prod in Session["CartItem"] as List<AddtoCart>)
-                                        {
-                                            int lineTotal = Convert.ToInt32(prod.Quantity * prod.UnitPrice);
-                                            Total = Convert.ToInt32(@Total + lineTotal);
-
-                                            TotalQ += prod.Quantity;
-
-                                            <div class="list-group">
-                                                <div class="list-group-item list-group-item-action ">
-                                                    <div class="d-flex w-100 justify-content-between">
-                                                        <h5 class="mb-1">@prod.ItemName</h5>
-                                                        <div>
-                                                            <button type="button" class="btn btn-dark btn-sm btn-clickminus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">-</button>
-                                                            <input id="quant" style="width:30px; border-radius:50%; text-align:center; background-color:gray; border:none; color:white" name="Quantity" type="text" placeholder="@prod.Quantity" value="@prod.Quantity" />
-                                                            <button type="button" class="btn btn-dark btn-sm btn-clickplus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">+</button>
-                                                        </div>
-                                                    </div>
-                                                    <p class="mb-1">@prod.StoreName</p>
-                                                    <input id="linestotal" class="mb-1 value" style="font-weight:bold; border:none; width:70px" value="@lineTotal" />
-                                                    @Html.Hidden("price", prod.UnitPrice, new { @id = "price" })
-                                                </div>
-                                            </div>
-                                            @Html.Hidden("Product_ID", @prod.ItemId);
-                                        }
-                                        @*<a href="#" class="list-group-item list-group-item-action ">
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <h5 class="mb-1">Total Amount</h5>
-                                                    <input id="totall" name="Amount" style="border:none;font-weight:bolder;text-align:right;font-size:larger" value="@Total" />
-                                                </div>
-                                            </a>
-
-                                        @Html.Hidden("TotalQuantity", TotalQ)
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer" style="justify-content: space-between;">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a href="#" class="list-group-item list-group-item-action d-inline " style="margin-right:20px;border:none">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <h6 class="mb-1">Total : </h6>
-                                        <input id="totall" name="Amount" style="border:none;font-weight:bolder;text-align:left;font-size:1rem; padding-left:10px" value="RS @Total" />
-                                    </div>
-                                </a>
-                                <div>
-                                    <button type="button" class="btn btn-success">Checkout</button>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>*@
     <!-- header -->
     <div class="agileits_header">
         <div class="w3l_offers">
@@ -174,7 +90,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     {
                         @Html.ActionLink("Cart(" + Session["CartCounter"] + ")", "CheckOutdetails", "Home", routeValues: null, htmlAttributes:new { id = "cartItem" });
                     }
-            </div>*@
+            </div>
         @if (Session["UserName"] != null)
         {
 
@@ -237,22 +153,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="banner">
         @RenderBody()
     </div>
-    <!-- newsletter -->
-    <div class="newsletter">
-        <div class="container">
-            <div class="w3agile_newsletter_left">
-                <h3>sign up for our newsletter</h3>
-            </div>
-            <div class="w3agile_newsletter_right">
-                <form action="#" method="post">
-                    <input type="email" name="Email" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}" required="">
-                    <input type="submit" value="subscribe now">
-                </form>
-            </div>
-            <div class="clearfix"> </div>
-        </div>
-    </div>
-    <!-- //newsletter -->
     <!-- footer -->
     <div class="footer">
         <div class="container">
@@ -347,7 +247,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 //}
             });
 
-        </script>*@
+        </script>
     <script>
         $(document).ready(function () {
             var readURL = function (input) {
@@ -411,4 +311,4 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         }
     </script>
 </body>
-</html>
+</html>*@

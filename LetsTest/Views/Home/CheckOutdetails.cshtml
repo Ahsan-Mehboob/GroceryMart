@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LetsTest.Models.AddtoCart>
+﻿@model LetsTest.Models.CartSummaryToCheckout
 @using LetsTest.Models
 @{
     ViewBag.Title = "CheckOutdetails";
@@ -15,7 +15,7 @@
             @Html.Partial("~/Views/Shared/_AlertView.cshtml", alertMessage)
         }
         <div style="display:flex;flex-direction:column; justify-content:center;">
-            <a href="~/Home/ListAddress" type="button" style="width:48.5%;align-self:center;margin-bottom:1%" class="btn btn-success btn-lg align-items-center">Select from existing Address</a>
+            <a href="~/Home/ListAddress" type="button" style="width:48.5%;align-self:center;margin-bottom:1%" class="btn btn-warning btn-lg align-items-center">Select from existing Address</a>
             <div class="row">
                 <div class="col-md-6 center-block">
                     <div class="card">
@@ -25,48 +25,42 @@
                             </h4>
                         </div>
                         @{
-                            int Total = 0;
                             int TotalQ = 0;
                         }
-                        @foreach (var prod in Model)
+                        @for (int prod = 0; prod < Model.ItemName.Count; prod++)
                         {
-                            int lineTotal = Convert.ToInt32(prod.Quantity * prod.UnitPrice);
-                            Total = Convert.ToInt32(@Total + lineTotal);
-
-                            TotalQ += prod.Quantity;
+                            TotalQ += Model.Quantity[prod];
                             <div class="card-body">
                                 <ul class="list-group mb-10">
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <h5>@prod.ItemName</h5>
-
-                                        <input id="quant" style="width:30px; border-radius:50%; text-align:center; background-color:gray; border:none; color:white" name="Quantity" type="text" placeholder="@prod.Quantity" value="@prod.Quantity" />
+                                        <h5>@Model.ItemName[prod]</h5>
+                                        <input id="quant" style="width:30px; border-radius:50%; text-align:center; background-color:gray; border:none; color:white" name="Quantity" type="text" placeholder="@Model.Quantity[prod]" value="@Model.Quantity[prod]" />
 
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center" style="font-weight:600">
-
-                                        <p class="mb-1">@prod.StoreName</p>
+                                        <p class="mb-1">@Model.StoreName[prod]</p>
                                     </li>
                                 </ul>
                             </div>
-                            @Html.Hidden("price", prod.UnitPrice, new { @id = "price" });
-                            @Html.Hidden("Product_ID", @prod.ItemId);
+                            <input name="Product_ID" , type="hidden" value="@Model.Product_ID[prod]" />
                         }
+
                         <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 20px;">
                             <button type="button" class="btn btn-light">Total Amount</button>
-                            <input class="form-control" id="totall" name="Amount" style="width:20%" value="@Total" />
+                            <input class="form-control" id="totall" name="Amount" style="width:20%" value="@Model.Amount" />
                         </div>
 
                         @*<div>
-                            <div class="" style="margin-top: 20px;display: flex; flex-direction: row; justify-content: space-between;">
-                                <div class="form-group mb-2" style="width:80%">
-                                    <label for="staticEmail2" class="sr-only">Voucher Code</label>
-                                    <input style="border: 1px solid black;" type="text" class="form-control-plaintext" id="staticEmail2" value="">
-                                </div>
+            <div class="" style="margin-top: 20px;display: flex; flex-direction: row; justify-content: space-between;">
+                <div class="form-group mb-2" style="width:80%">
+                    <label for="staticEmail2" class="sr-only">Voucher Code</label>
+                    <input style="border: 1px solid black;" type="text" class="form-control-plaintext" id="staticEmail2" value="">
+                </div>
 
-                                <button id="voucher" type="submit" class="btn btn-success mb-2">Enter Code</button>
-                            </div>
-                        </div>*@
-                        @Html.Hidden("TotalQuantity", TotalQ)
+                <button id="voucher" type="submit" class="btn btn-success mb-2">Enter Code</button>
+            </div>
+        </div>*@
+                        <input name="TotalQuantity" , type="hidden" value="@TotalQ" />
 
                     </div>
                     <button type="submit" class="btn btn-success btn-block mb-2">Place Order</button>
@@ -88,52 +82,10 @@
     </div>
 </div>*@
 
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+@*<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>*@
 
-
-
-<!-- js -->
-<script src="~/js/jquery-1.11.1.min.js"></script>
-<!--quantity-->
-
-
-<script>
-    $('.btn-clickplus').on('click', function () {
-        var q = $(this).parent().find('#quant').val();
-        q++;
-        $(this).parent().find('#quant').val(q);
-
-        var priceT = $(this).parents().find('#price').val();
-        var total = q * priceT;
-        debugger;
-
-        $(this).offsetParent().find('#linestotal').val(total);
-        var t = $(this).Parent().find('#totall').val();
-        var summ = parseInt(priceT) + parseInt(t);
-        $(this).parent().find("#totall").val(summ);
-        debugger;
-    });
-
-    $('.btn-clickminus').on('click', function () {
-        var q = $(this).parent().find('#quant').val();
-        q--;
-        $(this).parent().find('#quant').val(q);
-    });
-</script>
-<!--quantity-->
-<script>
-    $(document).ready(function (c) {
-        $('.close1').on('click', function (c) {
-            $('.rem1').fadeOut('slow', function (c) {
-                $('.rem1').remove();
-            });
-        });
-    });
-</script>
-
-<!-- //js -->
 <!-- script-for sticky-nav -->
 <script>
     $(document).ready(function () {

@@ -23,14 +23,17 @@
                     <form action="/LoginAndRegister/Register" method="post" onsubmit="return validationregister()" id="myform">
                         <input id="username" type="text" name="NAME" onblur="UserNameCheck();" placeholder="Username" required="">
                         <span id="userss" class="text-danger font-weight-bold"> </span>
+                        <p id="usernamestatus"></p>
                         <input id="password" type="password" name="PASSWORD" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required="">
                         <span id="passwordss" class="text-danger font-weight-bold"> </span>
                         <input id="confirmpassword" type="password" name="Confirm Password" placeholder="Confirm Password" required="">
                         <span id="cpsss" class="text-danger font-weight-bold"> </span>
                         <input id="textemail" type="email" name="EMAIL" onblur="Emailcheck();" placeholder="Email Address" required="">
                         <span id="emailsss" class="text-danger font-weight-bold"> </span>
+                        <p id="emailstatus"></p>
                         <input id="phonenumber" type="text" name="CONTACT" onblur="PhoneNumberCheck();" placeholder="Phone Number" required="">
                         <span id="phno" class="text-danger font-weight-bold"> </span>
+                        <p id="contactstatus"></p>
                         <input id="Register" type="submit" value="Register">
                     </form>
                 </div>
@@ -215,9 +218,9 @@
             datatype: 'json',
             success: function (data) {
                 if (data == 0)
-                    $("#emailsss").html('<font color="Green">Email is valid. </font>')
+                    $("#emailstatus").html('<font color="Green">Available </font>')
                 else if (data == 1)
-                    $("#emailsss").html('<font color="#B94A4D">You are already registered with this email. </font>')
+                    $("#emailstatus").html('<font color="#B94A4D">Already Registred </font>')
                }
         });
     }
@@ -232,9 +235,11 @@
             datatype: "json",
             success: function (data) {
                 if (data == 0)
-                    $('#userss').html('<font color="Green">UserName is Valid</font>')
+                    $('#usernamestatus').html('<font color="Green">Available</font>')
                 else if (data == 2)
-                    $('#userss').html('<font color="#B94A4D">Username is already exist.</font>')
+                    $('#usernamestatus').html('<font color="#B94A4D">Username Required</font>')
+                else
+                    $('#usernamestatus').html('<font color="#B94A4D">Already Registered You May Try Username Like ' + data[0] + ', ' + data[1] + ', ' + data[2] + ' </font>')
             },
             traditional: true
         });
@@ -250,9 +255,9 @@
             datatype: "json",
             success: function (data) {
                 if (data == 0)
-                    $('#phno').html('<font color="Green">Phone Number is Valid</font>')
+                    $('#contactstatus').html('<font color="Green">Phone Number is Valid</font>')
                 else if (data == 1)
-                    $("#phno").html('<font color="#B94A4D">Phone Number is already exist. </font>')
+                    $("#contactstatus").html('<font color="#B94A4D">Phone Number is already exist. </font>')
             },
             traditional: true
         });

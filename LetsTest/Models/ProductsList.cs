@@ -13,7 +13,6 @@ namespace LetsTest.Models
         public string DES { get; set; }
         public decimal PRICE { get; set; }
         public DateTime CREATED_AT { get; set; }
-        public string UPDATED_AT { get; set; }
         public int SUBCATEGORY_ID { get; set; }
         public string SUBCATEGORY_NAME { get; set; }
         public string SUBCATEGORY_DES { get; set; }
@@ -32,12 +31,5 @@ namespace LetsTest.Models
         public string TITLE { get; set; }
         public DateTime START_DATE { get; set; }
         public DateTime END_DATE { get; set; }
-        public string SUBCATEGORY_DISCOUNT { get; set; }
-        public decimal SUB_DISCOUNT { get; set; }
-        public DateTime S_START_DATE { get; set; }
-        public DateTime S_END_DATE { get; set; }
-        public decimal CATEGORY_DISCOUNT { get; set; }
-        public DateTime C_START_DATE { get; set; }
-        public DateTime C_END_DATE { get; set; }
     }
 }

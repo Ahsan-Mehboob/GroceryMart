@@ -40,7 +40,7 @@ namespace LetsTest.Controllers
                         NullValueHandling = NullValueHandling.Ignore,
                         MissingMemberHandling = MissingMemberHandling.Ignore
                     };
-                    productsLists = JsonConvert.DeserializeObject<List<ProductsList>>(prodlist, settings);
+                    productsLists = JsonConvert.DeserializeObject<List<ProductsList>>(prodlist,settings);
                     
                 }
                 var prods = productsLists.AsQueryable();

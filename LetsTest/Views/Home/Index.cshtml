@@ -97,9 +97,18 @@
                                     <figure>
                                         <div class="snipcart-item block">
                                             <div class="snipcart-thumb">
-                                                <a href="~/Single/SingleProduct/@items.ID"><img title=" " alt=" " src="@Url.Content(items.IMAGE1)" /></a>
+                                                <a href="~/Single/SingleProduct/@items.PRODUCT_ID"><img title=" " alt=" " src="@Url.Content(items.IMAGE1)" /></a>
                                                 <p style="background-color:blueviolet; color:whitesmoke; border-radius:20px; text-align:center; width:75%; font-weight:400px; margin-left:25px">@items.STORE</p>
                                                 <p style="font-weight:bold; font-size: 1.0rem">@items.NAME</p>
+                                                @*@if (items.DESC_Price != null)
+        {
+            <h4 style="font-weight:bold; font-size: 1.0rem">Rs @items.DESC_Price</h4>
+        }
+        else
+        {
+            <h4 style="font-weight:bold; font-size: 1.0rem">Rs @items.PRICE</h4>
+
+        }*@
                                                 <h4 style="font-weight:bold; font-size: 1.0rem">Rs @items.PRICE</h4>
                                             </div>
                                             <div class="snipcart-details top_brand_home_details">

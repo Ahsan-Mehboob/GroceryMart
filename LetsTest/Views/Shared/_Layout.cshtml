@@ -19,17 +19,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link href="~/fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800" rel="stylesheet">
 
     <link href="~/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-    <link rel="stylesheet" href="~/css/shop.css" type="text/css" media="screen" property="" />
+    @*<link rel="stylesheet" href="~/css/shop.css" type="text/css" media="screen" property="" />*@
     <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="~/css/style7.css" rel="stylesheet" type="text/css" media="all" />
     <link href="~/css/easy-responsive-tabs.css" rel='stylesheet' type='text/css' />
-    <link rel="stylesheet" type="text/css" href="~/css/jquery-ui1.css">
+    @*<link rel="stylesheet" type="text/css" href="~/css/jquery-ui1.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    @*<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>*@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
     <!-- font-awesome icons -->
     <link href="~/css/font-awesome.css" rel="stylesheet" type="text/css" media="all" />
@@ -53,89 +52,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </script>
 </head>
 <body>
-    @*<div class="modal fade   modal-lg" style="top:40px" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-        <div class="modal-dialog-centered modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="text-center">Shopping cart Items</h4>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                @if (Session["CartItem"] == null)
-                {
-                    <div class="modal-body">
-                        <h4>Your Cart is Empty.</h4>
-                    </div>
-
-                }
-                else
-                {
-                    <div class="modal-body">
-                        <div class="col">
-                            <div class="container ">
-                                <h4 class="text-center">Shopping cart Summary</h4>
-                                <div class="container" >
-                                    @{
-                                        int Total = 0;
-                                        int TotalQ = 0;
-                                    }
-                                    @foreach (var prod in Session["CartItem"] as List<AddtoCart>)
-                                    {
-                                        int lineTotal = Convert.ToInt32(prod.Quantity * prod.UnitPrice);
-                                        Total = Convert.ToInt32(@Total + lineTotal);
-
-                                        TotalQ += prod.Quantity;
-
-                                        <div class="list-group">
-                                            <div class="list-group-item list-group-item-action ">
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <h5 class="mb-1">@prod.ItemName</h5>
-                                                    <div>
-                                                        <button type="button" class="btn btn-dark btn-sm btn-clickminus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">-</button>
-                                                        <input id="quant" style="width:30px; border-radius:50%; text-align:center; background-color:gray; border:none; color:white" name="Quantity" type="text" placeholder="@prod.Quantity" value="@prod.Quantity" />
-                                                        <button type="button" class="btn btn-dark btn-sm btn-clickplus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">+</button>
-                                                    </div>
-                                                </div>
-                                                <p class="mb-1">@prod.StoreName</p>
-                                                <input id="linestotal" class="mb-1 value" style="font-weight:bold; border:none; width:70px" value="@lineTotal" />
-                                                @Html.Hidden("price", prod.UnitPrice, new { @id = "price" })
-                                            </div>
-                                        </div>
-                                        @Html.Hidden("Product_ID", @prod.ItemId);
-                                    }
-                                    @*<a href="#" class="list-group-item list-group-item-action ">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">Total Amount</h5>
-                                                <input id="totall" name="Amount" style="border:none;font-weight:bolder;text-align:right;font-size:larger" value="@Total" />
-                                            </div>
-                                        </a>
-
-                                    @Html.Hidden("TotalQuantity", TotalQ)
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer" style="justify-content: space-between;">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="#" class="list-group-item list-group-item-action d-inline " style="margin-right:20px;border:none">
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <h6 class="mb-1">Total : </h6>
-                                    <input id="totall" name="Amount" style="border:none;font-weight:bolder;text-align:left;font-size:1rem; padding-left:10px" value="RS @Total" />
-                                </div>
-                            </a>
-                            <div>
-                                <button type="button" class="btn btn-success">Checkout</button>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>*@
     <!-- header -->
     <div class="agileits_header">
         <div class="w3l_offers">
@@ -147,6 +63,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <input id="search" type="button" value="">
             </form>
         </div>
+        @*<div>
+            <a href="~/Map/Index"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+        </div>*@
 
         <div class="product_list_header">
             @if (Session["CartCounter"] == null)
@@ -340,45 +259,45 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </script>
 
     @*<script src="~/js/minicart.js"></script>
-    <script>
-        paypal.minicart.render();
+        <script>
+            paypal.minicart.render();
 
-        paypal.minicart.cart.on('checkout', function (evt) {
-            var items = this.items(),
-                len = items.length,
-                total = 0,
-                i,
-            data = [];
-            var cartList = {};
+            paypal.minicart.cart.on('checkout', function (evt) {
+                var items = this.items(),
+                    len = items.length,
+                    total = 0,
+                    i,
+                data = [];
+                var cartList = {};
 
 
-            for (i = 0; i < len; i++) {
-                cartList[i] ={
-                    ID: items[i].get("ID"),
-                    NAME: items[i].get('item_name'),
-                    AMOUNT : items[i].get('amount'),
-                    QUANTITY: items[i].get('quantity'),
-                    STORE_ID: items[i].get('STORE_ID'),
-                    IMAGE1: items[i].get('IMAGE1')
+                for (i = 0; i < len; i++) {
+                    cartList[i] ={
+                        ID: items[i].get("ID"),
+                        NAME: items[i].get('item_name'),
+                        AMOUNT : items[i].get('amount'),
+                        QUANTITY: items[i].get('quantity'),
+                        STORE_ID: items[i].get('STORE_ID'),
+                        IMAGE1: items[i].get('IMAGE1')
+                    }
                 }
-            }
 
-            $.ajax({
-                url: '/CheckOut/CheckOutdetails/',
-                data: { itemss: (cartList) },
-                dataType: 'json',
-                type: 'POST',
-            }).done(function (result) {
-                window.location.href = '@Url.Action("CheckOutdetails","CheckOut")';
-            })
+                $.ajax({
+                    url: '/CheckOut/CheckOutdetails/',
+                    data: { itemss: (cartList) },
+                    dataType: 'json',
+                    type: 'POST',
+                }).done(function (result) {
+                    window.location.href = '@Url.Action("CheckOutdetails","CheckOut")';
+                })
 
-            //if (total < 3) {
-            //    alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');
-            //    evt.preventDefault();
-            //}
-        });
+                //if (total < 3) {
+                //    alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');
+                //    evt.preventDefault();
+                //}
+            });
 
-    </script>*@
+        </script>*@
     <script>
         $(document).ready(function () {
             var readURL = function (input) {
@@ -416,30 +335,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         });
     </script>
     <script type="text/javascript">
-    function AddToCart(item) {
-        var itemId = $(item).attr("itemid");
-        var formData = new FormData();
-        formData.append("ItemId", itemId);
-        var count = 0;
-        $.ajax({
-            async: true,
-            type: 'POST',
-            contentType: false,
-            processData: false,
-            data: formData,
-            url: '/Home/Index',
-            success: function (data) {
-                if (data.Success) {
-                    //$("#cartitem").text("Cart("+data.Counter+")");
+        function AddToCart(item) {
+            var itemId = $(item).attr("itemid");
+            var formData = new FormData();
+            formData.append("ItemId", itemId);
+            var count = 0;
+            $.ajax({
+                async: true,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: formData,
+                url: '/Home/Index',
+                success: function (data) {
+                    if (data.Success) {
+                        //$("#cartitem").text("Cart("+data.Counter+")");
 
-                    $("#cartItem").text('View Your Cart(' + data.Counter + ')');
+                        $("#cartItem").text('View Your Cart(' + data.Counter + ')');
+                    }
+                },
+                error: function () {
+                    alert("There is some Problem.");
                 }
-            },
-            error: function () {
-                alert("There is some Problem.");
-            }
-        });
-    }
-</script>
+            });
+        }
+    </script>
 </body>
 </html>

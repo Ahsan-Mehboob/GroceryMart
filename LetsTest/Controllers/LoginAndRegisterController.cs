@@ -74,7 +74,7 @@ namespace LetsTest.Controllers
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<int>();
+                    var readTask = result.Content.ReadAsAsync<string[]>();
                     readTask.Wait();
                     var list = readTask.Result;
                     return Json(list, JsonRequestBehavior.AllowGet);
@@ -115,28 +115,40 @@ namespace LetsTest.Controllers
                 UserLoginList userlogin = new UserLoginList();
                 client.BaseAddress = new Uri(baseurl);
 
-                //HTTP POST
-                var postTask = client.PostAsJsonAsync<Login>("/api/LoginApi/Create", data);
-                postTask.Wait();
-
-                var result = postTask.Result;
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    var readTask = result.Content.ReadAsAsync<UserLoginList>();
-                    readTask.Wait();
+                    var postTask = client.PostAsJsonAsync<Login>("/api/LoginApi/Create", data);
+                    postTask.Wait();
 
-                    var userlog = readTask.Result;
-                    Session["UserId"] = userlog.ID;
-                    Session["UserName"] = userlog.NAME;
+                    var result = postTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<UserLoginList>();
+                        readTask.Wait();
 
-                    return RedirectToAction("Index", "Home");
+                        var userlog = readTask.Result;
+                        Session["UserId"] = userlog.ID;
+                        Session["UserName"] = userlog.NAME;
+                        if(Session["cartItem"] != null)
+                        {
+                            return RedirectToAction("CartSummary", "Home");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                    else
+                    {
+                        TempData.Add("AlertMessage", new AlertModel("It seems you misspell something. Or Please Signup First.", AlertModel.AlertType.Warning));
+                        return RedirectToAction("Login");
+                    }
                 }
-                else
+                catch(Exception ex)
                 {
-                    TempData.Add("AlertMessage", new AlertModel("It seems you misspell something. Or Please Signup First.", AlertModel.AlertType.Warning));
-                    return RedirectToAction("Login");
+                    Console.WriteLine("Exception occured"+ex);
                 }
-
+                return RedirectToAction("Login");
             }
         }
         [HttpGet]

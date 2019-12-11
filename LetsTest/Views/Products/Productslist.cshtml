@@ -9,6 +9,58 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="w3l_banner_nav_left">
+    <div class="search-hotel">
+        <h3 class="agileits-sear-head">Search Here..</h3>
+        <form action="#" method="post">
+            <input type="search" placeholder="Product name..." name="search" required="">
+            <input type="submit" value=" ">
+        </form>
+    </div>
+    <!-- price range -->
+    <div class="range">
+        <h3 class="agileits-sear-head">Price range</h3>
+        <ul class="dropdown-menu6">
+            <li>    
+                <div id="slider-range"></div>
+                <input type="text" id="amount" style="border: 0; color: #ffffff; font-weight: normal;" />
+            </li>
+        </ul>
+    </div>
+    <!-- //price range -->
+    <!-- discounts -->
+    <div class="left-side">
+        <h3 class="agileits-sear-head">Discount</h3>
+        <ul>
+            <li>
+                <input type="checkbox" class="checked">
+                <span class="span">5% or More</span>
+            </li>
+            <li>
+                <input type="checkbox" class="checked">
+                <span class="span">10% or More</span>
+            </li>
+            <li>
+                <input type="checkbox" class="checked">
+                <span class="span">20% or More</span>
+            </li>
+            <li>
+                <input type="checkbox" class="checked">
+                <span class="span">30% or More</span>
+            </li>
+            <li>
+                <input type="checkbox" class="checked">
+                <span class="span">50% or More</span>
+            </li>
+            <li>
+                <input type="checkbox" class="checked">
+                <span class="span">60% or More</span>
+            </li>
+        </ul>
+    </div>
+    <!-- //discounts -->
+</div>
+
 <div class="w3l_banner_nav_right">
     <div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_sub">
         <h3>Products</h3>
@@ -31,17 +83,17 @@
                 </ul>
             </div>
         </div>
-       
+
         @if (Model.Count() == 0)
         {
             <h4>Nothing found to your search criteria.</h4>
         }
         else
         {
-            <div class="w3ls_w3l_banner_nav_right_grid1"  style="padding:60px">
+            <div class="w3ls_w3l_banner_nav_right_grid1" style="padding:60px">
                 @foreach (var prod in Model)
                 {
-                    <div class="col-md-3 w3ls_w3l_banner_left"  >
+                    <div class="col-md-3 w3ls_w3l_banner_left">
                         <div class="hover14 column">
                             <div class="agile_top_brand_left_grid w3l_agile_top_brand_left_grid">
                                 <div class="agile_top_brand_left_grid_pos">
@@ -54,12 +106,8 @@
                                                 <a href="~/Single/SingleProduct/@prod.ID" value="@prod.ID" id="@prod.ID"><img src="@Url.Content(prod.IMAGE1)" alt=" " class="img-responsive img-resize" /></a>
                                                 <p style="background-color:blueviolet; color:whitesmoke; border-radius:20px; text-align:center; width:75%; font-weight:400px; margin-left:25px">@prod.STORE</p>
                                                 <p style="font-weight:bold; font-size: 1.0rem">@prod.NAME</p>
-                                                @if ((prod.DISCOUNT != null && prod.START_DATE == DateTime.Now.Date) || (prod.SUBCATEGORY_DISCOUNT != null && prod.S_START_DATE == DateTime.Now.Date))
+                                                @if (prod.DISCOUNT != null)
                                                 {
-                                                    if (prod.SUBCATEGORY_DISCOUNT != null)
-                                                    {
-                                                        prod.DISCOUNT = prod.SUBCATEGORY_DISCOUNT;
-                                                    }
 
                                                     var data = prod.DISCOUNT;
                                                     prod.percentage = Convert.ToDecimal(data);

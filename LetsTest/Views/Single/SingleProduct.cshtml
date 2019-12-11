@@ -20,6 +20,20 @@
             </div>
             <div class="snipcart-item block">
                 <div class="snipcart-thumb agileinfo_single_right_snipcart">
+                    @if (Model.DISCOUNT != null)
+                    {
+
+                        var data = Model.DISCOUNT;
+                        Model.percentage = Convert.ToDecimal(data);
+                        Model.DESC = (Model.percentage / 100) * (Model.PRICE);
+                        Model.DESC_Price = (Model.PRICE) - (Model.DESC);
+                        <h4 style="font-weight:bold; font-size: 1.0rem">Rs @Model.DESC_Price <span>Rs @Model.PRICE</span></h4>
+
+                    }
+                    else
+                    {
+                        <h4 style="font-weight:bold; font-size: 1.0rem">Rs @Model.PRICE</h4>
+                    }
                     <h4 style="font-size:1.0rem">Rs. @Model.PRICE</h4>
                     @Html.Hidden("CATEGORY_ID", Model.CATEGORY_ID, new { @id = "CATEGORY_ID" })
                 </div>

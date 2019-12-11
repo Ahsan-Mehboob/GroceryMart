@@ -17,5 +17,9 @@ namespace LetsTest.Models
         public int STORE_ID { get; set; }
         public string SNAME { get; set; }
         public int CATEGORY_ID { get; set; }
+        public decimal percentage { get; set; }
+        public decimal DESC { get; set; }
+        public string DISCOUNT { get; set; }
+        public decimal DESC_Price { get; set; }
     }
 }

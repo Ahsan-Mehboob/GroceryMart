@@ -35,7 +35,12 @@ namespace LetsTest.Controllers
                 {
                     //storing the response details recieved from web api   
                     var prodlist = await prod.Content.ReadAsStringAsync();
-                    singleProductDetails = JsonConvert.DeserializeObject<SingleProductDetails>(prodlist);
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    singleProductDetails = JsonConvert.DeserializeObject<SingleProductDetails>(prodlist,settings);
 
                 }
                 return View(singleProductDetails);
@@ -62,7 +67,12 @@ namespace LetsTest.Controllers
                 {
                     //storing the response details recieved from web api   
                     var prodlist = await prod.Content.ReadAsStringAsync();
-                    prods = JsonConvert.DeserializeObject<List<ProductsList>>(prodlist);
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    prods = JsonConvert.DeserializeObject<List<ProductsList>>(prodlist,settings);
 
                 }
                 return PartialView(prods);
@@ -89,7 +99,12 @@ namespace LetsTest.Controllers
                 {
                     //storing the response details recieved from web api   
                     var prodlist = await prod.Content.ReadAsStringAsync();
-                    prods = JsonConvert.DeserializeObject<List<ProductsList>>(prodlist);
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    prods = JsonConvert.DeserializeObject<List<ProductsList>>(prodlist,settings);
 
                 }
                 return PartialView(prods);
@@ -117,7 +132,12 @@ namespace LetsTest.Controllers
                 {
                     //storing the response details recieved from web api   
                     var prodlist = await prod.Content.ReadAsStringAsync();
-                    productsLists = JsonConvert.DeserializeObject<List<ProductsList>>(prodlist);
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    productsLists = JsonConvert.DeserializeObject<List<ProductsList>>(prodlist,settings);
 
                 }
                 var prods = productsLists.AsQueryable();

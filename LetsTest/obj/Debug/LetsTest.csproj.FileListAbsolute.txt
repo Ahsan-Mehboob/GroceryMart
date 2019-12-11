@@ -547,3 +547,6 @@ C:\Users\ahsan\Videos\LetsTest\LetsTest\obj\Debug\LetsTest.csproj.CoreCompileInp
 C:\Users\ahsan\Videos\LetsTest\LetsTest\obj\Debug\LetsTest.csproj.CopyComplete
 C:\Users\ahsan\Videos\LetsTest\LetsTest\obj\Debug\LetsTest.dll
 C:\Users\ahsan\Videos\LetsTest\LetsTest\obj\Debug\LetsTest.pdb
+C:\Users\ahsan\Videos\repos\LetsTest\LetsTest\bin\FluentValidation.dll
+C:\Users\ahsan\Videos\repos\LetsTest\LetsTest\bin\System.ComponentModel.Annotations.dll
+C:\Users\ahsan\Videos\repos\LetsTest\LetsTest\bin\FluentValidation.xml

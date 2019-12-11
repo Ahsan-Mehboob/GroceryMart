@@ -13,7 +13,7 @@ ul li,ol li{
 	font-size:14px;
     display:flex;
 }
-/*#cartItem {
+#cartItem {
     font-weight: 800;
     border: 2px solid #fff;
     margin-top: 30px;
@@ -21,7 +21,7 @@ ul li,ol li{
     justify-content: center;
     border-radius: 5px 20px 5px;
     color: #fff;
-}*/
+}
 p{
 	margin:0;
 }
@@ -98,7 +98,7 @@ input[type="submit"],#PPMiniCart .minicart-submit,.w3ls_vegetables ul li a,input
 	font-size: 1.3em;
     color: #fff;
     text-decoration: none;
-    padding: .5em 3.5em;
+    padding: .5em 2em;
     background: #84C639;
 	display:block;
 }

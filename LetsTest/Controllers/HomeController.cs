@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Net.Http;
-using System.Threading.Tasks;
-using System.Net.Http.Headers;
 using LetsTest.Models;
-using Newtonsoft.Json;
 
 namespace LetsTest.Controllers
 {
@@ -23,16 +19,22 @@ namespace LetsTest.Controllers
             {
                 client.BaseAddress = new Uri(baseurl);
                 //HTTP GET
-                var responseTask = client.GetAsync("/api/OrdersApi/ProductsBuyUsers");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    var readTask = result.Content.ReadAsAsync<List<ProductsList>>();
-                    readTask.Wait();
+                    var responseTask = client.GetAsync("/api/OrdersApi/ProductsBuyUsers");
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<List<ProductsList>>();
+                        readTask.Wait();
 
-                    productsLists = readTask.Result;
+                        productsLists = readTask.Result;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("Error Occurs" + ex);
                 }
             }
             return View(productsLists);
@@ -77,6 +79,7 @@ namespace LetsTest.Controllers
                 add.ItemName = product.NAME;
                 add.Quantity = 1;
                 add.Total = product.PRICE;
+                add.DESC_Price = product.DESC_Price;
                 add.UnitPrice = product.PRICE;
                 add.StoreName = product.SNAME;
                 addtocart.Add(add);
@@ -86,11 +89,16 @@ namespace LetsTest.Controllers
 
             return Json(new {Success = true, Counter = addtocart.Count }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult newCart(CartSummaryToCheckout data)
+        {
+            Session["ords"] = data;
+            return RedirectToAction("CheckOutdetails");
+        }
         public ActionResult CheckOutdetails()
         {
             if (Session["UserId"] != null)
             {
-                List<AddtoCart> order = Session["CartItem"] as List<AddtoCart>;
+                CartSummaryToCheckout order = Session["ords"] as CartSummaryToCheckout;
                 return View(order);
             }
             else
@@ -98,45 +106,46 @@ namespace LetsTest.Controllers
                 return RedirectToAction("Login", "LoginAndRegister");
             }
         }
-
         [HttpPost]
         public ActionResult AddToOrder(Order order)
         {
             order.ShippingID = Convert.ToInt32(Session["AddressId"]);
             order.CreatedAt = DateTime.Now;
             order.UpdatedAt = DateTime.Now;
+            order.STORE_ID = 1203;
             order.OrderStatus = 0;
             order.TotalShippingCharges = 200;
             order.UID = Convert.ToInt32(Session["UserId"]);
             order.AmountAfterDiscount = 100;
             order.city_id = 6;
-            if(order.ShippingID != 0)
-            {
-                using (var client = new HttpClient())
+                if(order.ShippingID != 0)
                 {
-                    client.BaseAddress = new Uri(baseurl);
-
-                    //HTTP POST
-                    var postTask = client.PostAsJsonAsync<Order>("/api/OrdersApi/Create", order);
-                    postTask.Wait();
-
-                    var result = postTask.Result;
-                    if (result.IsSuccessStatusCode)
+                    using (var client = new HttpClient())
                     {
-                        var readTask = result.Content.ReadAsAsync<int>();
-                        readTask.Wait();
-                        var userlog = readTask.Result;
-                        Session["OrderID"] = userlog;
+                        client.BaseAddress = new Uri(baseurl);
+
+                        //HTTP POST
+                        var postTask = client.PostAsJsonAsync<Order>("/api/OrdersApi/Create", order);
+                        postTask.Wait();
+
+                        var result = postTask.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            var readTask = result.Content.ReadAsAsync<int>();
+                            readTask.Wait();
+                            var userlog = readTask.Result;
+                            Session["OrderID"] = userlog;
+                        }
+                        Session["CartCounter"] = null;
+                        Session["AddressId"] = null;
+                        return RedirectToAction("OrderStatus");
                     }
-                    Session["CartCounter"] = null;
-                    return RedirectToAction("OrderStatus");
                 }
-            }
-            else
-            {
-                TempData.Add("AlertMessage", new AlertModel("Please provide Your Shipping Address.", AlertModel.AlertType.Error));
-                return RedirectToAction("CheckOutdetails");
-            }
+                else
+                {
+                    TempData.Add("AlertMessage", new AlertModel("Please provide Your Shipping Address.", AlertModel.AlertType.Error));
+                    return RedirectToAction("AddAddress");                    
+                }
 
         }
         public ActionResult OrderStatus()
@@ -147,18 +156,23 @@ namespace LetsTest.Controllers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(baseurl);
-
-                //HTTP POST
-                var responseTask = client.GetAsync("api/OrdersApi/AllOrderInformation?id=" + ordstat);
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    var readTask = result.Content.ReadAsAsync<List<OrderStatus>>();
-                    readTask.Wait();
+                    var responseTask = client.GetAsync("api/OrdersApi/AllOrderInformation?id=" + ordstat);
+                    responseTask.Wait();
 
-                    ords = readTask.Result;
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<List<OrderStatus>>();
+                        readTask.Wait();
+
+                        ords = readTask.Result;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception Occured" + ex);
                 }
                 return View(ords);
             }
@@ -191,7 +205,7 @@ namespace LetsTest.Controllers
                     var ide = readTask.Result;
                     Session["AddressId"] = ide;
                     TempData.Add("AlertMessage", new AlertModel("Your Address has been added successfully.", AlertModel.AlertType.Success));
-                    return RedirectToAction("CheckOutdetails");
+                    return RedirectToAction("ListAddress");
                 }
                 return View();
             }
@@ -209,18 +223,23 @@ namespace LetsTest.Controllers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(baseurl);
-
-                //HTTP POST
-                var responseTask = client.GetAsync("api/OrdersApi/AllAddresses?id=" + id);
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    var readTask = result.Content.ReadAsAsync<List<AddressList>>();
-                    readTask.Wait();
+                    var responseTask = client.GetAsync("api/OrdersApi/AllAddresses?id=" + id);
+                    responseTask.Wait();
 
-                    address = readTask.Result;
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<List<AddressList>>();
+                        readTask.Wait();
+
+                        address = readTask.Result;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("Exception Occured" + ex);
                 }
                 return View(address);
             }
