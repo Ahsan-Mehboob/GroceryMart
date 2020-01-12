@@ -1,0 +1,48 @@
+﻿@model IEnumerable<LetsTest.Models.OrderStatus>
+<div class="panel panel-default target">
+    <div class="panel-default" style="display:flex;flex-direction:row;justify-content:space-between">
+        <div class="panel-heading" contenteditable="false">My recent Orders</div>
+        <div class="panel-heading"><a href="~/Home/OrderStatus">See All Orders</a></div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            @foreach (var m in Model)
+            {
+                string status;
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <img alt="300x200" src="~/Images/shutterstock_140952511.jpg">
+                        <div class="caption">
+                            <h4>
+                                OrderID: @m.ID
+                            </h4>
+                            @if (m.ORDERSTATUS == "0")
+                            {
+                                status = "Order is Placed";
+                                <div class="" style="display:flex; flex-direction:row;align-items:center;">
+                                    <h5>Order Status: </h5>
+                                    <p style="color:orangered; margin-bottom:0;font-weight:700">&nbsp;@status</p>
+                                </div>
+                            }
+                            else if (m.ORDERSTATUS == "1")
+                            {
+                                status = "Order is in Process";
+                                <div class="" style="display:flex; flex-direction:row;align-items:center;">
+                                    <h5>Order Status: </h5><p style="color:blueviolet;margin-bottom:0;font-weight:700">&nbsp;@status</p>
+                                </div>
+                            }
+                            else
+                            {
+                                status = "Order Delivered";
+                                <div class="" style="display:flex; flex-direction:row;align-items:center;">
+                                    <h5>Order Status: </h5><p style="color:green;margin-bottom:0;font-weight:700">&nbsp;@status</p>
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

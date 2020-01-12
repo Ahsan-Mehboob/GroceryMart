@@ -14,12 +14,12 @@
         /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
         #map {
-            height: 300px;
-            width: 750px;
+            height: 400px;
+            width: 850px;
+
         }
     </style>
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaqHbH8JKxbLNmV9dbUhCJsTS3sjOvoeE&callback=initMap"
             type="text/javascript"></script>
     <script type="text/javascript">
@@ -35,7 +35,7 @@
             var coords = new google.maps.LatLng(myLat, myLong);
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: coords,
-                zoom: 16
+                zoom: 14
             });
             var marker = new google.maps.Marker({ map: map, position: coords });
              var contentString = '<div id="content">' +
@@ -127,8 +127,13 @@
     </script>
 </head>
 <body>
-    <input type="range" class="custom-range" id="customRange1" value="10">
-    <div id="map"></div>
+    <div class="row" style="margin-left:20%">
+        <h5>Drag to control Radius &nbsp;&nbsp;</h5>
+        <input type="range" class="custom-range form-control" id="customRange1" style="width:20%">
+    </div>
+    <br />
+    <div id="map" style="margin-left:20%"></div>
+    <br />
 </body>
 </html>
 

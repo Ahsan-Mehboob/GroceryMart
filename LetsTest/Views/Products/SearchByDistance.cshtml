@@ -4,14 +4,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<div>
+
+<div>
     <h5>Find Nearby Stores</h5>
     <button id="btnmap">Less than 1 KM</button>
     <p id="demo"></p>
-</div>*@
+</div>
 
-<div>
-    <div class="w3l_banner_nav_left" style="margin-top:10%;padding:10px;background:#f1f2f6;height:100vh">
+@*<div>
+    <div class="w3l_banner_nav_left" style="margin-top:12%;padding:10px;background:#f1f2f6;height:100vh">
         <div class="dropdown d-inline" style="padding-top:20px;margin-top:20px">
             <h5 style="color:#e67e22">Sort By Price</h5>
             <button class="btn btn-success dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">
@@ -37,19 +38,6 @@
 
                     }
                 </div>
-
-
-                @*<div>
-                        <ul>
-                            <li>
-                                <input type="submit" name="storename" value="@ViewBag.store[i]" />
-                            </li>
-                        </ul>
-                    </div>*@
-
-                @*<b>Search By:</b> @Html.RadioButton("searchBy", "StoreName", true)<text>Store Name</text>
-                    @Html.RadioButton("searchBy", "ProductName")<text>Product Name</text><br />
-                    @Html.TextBox("Search")<input type="submit" value="Search" />*@
             }
         </div>
         <div style="border-top:2px solid black;margin-top:30px;padding-top:20px">
@@ -69,9 +57,6 @@
                             </div>
 
                         </td>
-
-                        @*<td>Max Price<input id="maxprice" type="number" name="MaxPrice" readonly="readonly" /></td>*@
-
                     }
                 </tr>
 
@@ -80,7 +65,7 @@
         </div>
     </div>
 
-</div>
+</div>*@
 
 
 @*<div class="w3l_banner_nav_left" style="margin-top:5%">
@@ -110,7 +95,7 @@
         <div class="w3ls_w3l_banner_nav_right_grid1">
             @foreach (var prod in Model)
             {
-                <div class="col-md-3 w3ls_w3l_banner_left" id="xyx">
+                <div class="col-md-3 w3ls_w3l_banner_left">
                     <div class="hover14 column">
                         <div class="agile_top_brand_left_grid w3l_agile_top_brand_left_grid">
                             <div class="agile_top_brand_left_grid_pos">
@@ -140,30 +125,6 @@
     </div>
 </div>
 <div class="clearfix"></div>
-<script type="text/javascript">
-    function AddToCart(item) {
-        var itemId = $(item).attr("itemid");
-        var formData = new FormData();
-        formData.append("ItemId", itemId);
-        var count = 0;
-        $.ajax({
-            async: true,
-            type: 'POST',
-            contentType: false,
-            processData: false,
-            data: formData,
-            url: '/Home/Index',
-            success: function (data) {
-                if (data.Success) {
-                    $("#cartItem").text("Cart(" + data.Counter + ")");
-                }
-            },
-            error: function () {
-                alert("There is some Problem.");
-            }
-        });
-    }
-</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -203,6 +164,7 @@
 
         var coords = new google.maps.LatLng(myLat, myLong);
         $("#btnmap").click(function () {
+            debugger;
             var radius = 1;
             $.get("@Url.Action("GetAllLocations", "Map")", function (stores, status) {
                 var contentString = [];
@@ -215,7 +177,7 @@
                         }
                     }
                 }
-
+                debugger;
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",

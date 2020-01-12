@@ -1,110 +1,99 @@
 ﻿@model LetsTest.Models.UserProfile
+@using LetsTest.Models
 @{
     ViewBag.Title = "Profile";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_ProfileLayout.cshtml";
 }
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<hr class="">
+<div class="container target" style="margin-top:5%">
+    <div class="row">
+        <div class="col-sm-10">
+            <h1 class="">@Model.NAME</h1>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-
-            </div>
+            @*<button type="button" class="btn btn-info">My message</button>*@
+            <br>
         </div>
-
+        <div class="col-sm-2">
+            <a class="pull-right">
+                <img title="profile image" class="img-circle img-responsive" src="~/Images/85362512-user-icon-male-avatar-in-business-suit-businessman-flat-icon-man-in-business-suit-avatar-of-business.jpg" />
+            </a>
+        </div>
     </div>
-</div>
-
-<div class="container bootstrap snippet" style="margin-top:3%">
+    <br>
     <div class="row">
         <div class="col-sm-3">
             <!--left col-->
+            <ul class="list-group">
+                <li class="list-group-item text-muted" contenteditable="false">Profile</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Joined</strong></span> @Model.CREATED_AT.ToShortDateString()</li>
+                <li class="list-group-item text-right">
+                    <span class="pull-left"><strong class="">User name</strong></span>@Model.NAME
+                </li>
+                <li class="list-group-item text-right">
+                    <span class="pull-left"><strong class="">Role: </strong></span> Customer
+                </li>
+            </ul>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Contact Me
+                </div>
+                <div class="panel-body">
 
-            <div class="text-center">
-                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
-                <h6>Upload a different photo...</h6>
-                <input type="file" class="text-center center-block file-upload">
-            </div>
-
-            <div class="form-group">
-                <div class="col-xs-12">
-                    <br>
-                    <button class="btn btn-lg btn-light" id="btnedit"> Edit Profile </button>
+                    <i style="color:green" class="fa fa-envelope"></i>
+                    <h6>@Model.EMAIL</h6>
+                    <i style="color:green" class="fa fa-phone"></i>
+                    <h6>@Model.CONTACT</h6>
                 </div>
             </div>
-            <hr />
-            <br>
 
-        </div><!--/col-3-->
-        <div class="col-sm-9">
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+            <ul class="list-group">
+                <li class="list-group-item text-muted">
+                    My Orders Details <i class="fa fa-dashboard fa-1x"></i>
+                </li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Total Orders</strong></span> @ViewBag.total</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Orders Placed</strong></span> @ViewBag.orderplaces</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Orders InProcess</strong></span> @ViewBag.orderinprocess</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Orders delivers</strong></span> @ViewBag.orderdeliver</li>
             </ul>
+            <div class="panel panel-default">
+                <div class="panel-heading">Social Media</div>
+                <div class="panel-body">
+                    <i class="fa fa-facebook fa-2x"></i>  <i class="fa fa-github fa-2x"></i>
+                    <i class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i>  <i class="fa fa-google-plus fa-2x"></i>
+                </div>
+            </div>
+        </div>
+        <!--/col-3-->
+        <div class="col-sm-9" style="" contenteditable="false">
+            <div class="panel panel-default">
+                <div class="panel-heading">@Model.NAME</div>
+                <div class="panel-body">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </div>
+            </div>
 
-            <div class="tab-content">
-                <div class="tab-pane active" id="home">
-                    <hr>
-                    <form class="form" action="##" method="post" id="registrationForm">
-                        <div class="form-group">
+            <div id="orderlist"></div>
 
-                            <div class="col-xs-6">
-                                <label for="Name"><h4>Name</h4></label>
-                                <p>@Model.NAME</p>
-                            </div>
-                        </div>
+            <div class="panel panel-default">
+                <div class="panel-heading"><a href="~/Home/ListAddress" style="color:black;font-size:1.5rem;align-self:center">Manage My Addresses</a></div>
+            </div>
+        </div>
 
-                        <div class="form-group">
-
-                            <div class="col-xs-6">
-                                <label for="phone"><h4>Contact</h4></label>
-                                <p>@Model.CONTACT</p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-
-                            <div class="col-xs-6">
-                                <label for="email"><h4>Email</h4></label>
-                                <p>@Model.EMAIL</p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-
-                            <div class="col-xs-6">
-                                <label for="email"><h4>Location</h4></label>
-                                <p>Sabzazar</p>
-                            </div>
-                        </div>
-                    </form>
-
-                    <hr>
-
-                </div><!--/tab-pane-->
-
-
-            </div><!--/tab-pane-->
-        </div><!--/tab-content-->
-    </div><!--/col-9-->
-</div><!--/row-->
-
+        <div id="push"></div>
+    </div>
+</div>
 <script>
-    $(document).ready(function () {
-        $("#btnedit").click(function () {
+        $(document).ready(function () {
             $.ajax({
-                type:"POST",
-                url: "/UserProfile/UserProfileEdit/"
-            }
-            ).done(function (result) {
-                $(".modal-title").html("Edit Your Profile");
-                $(".modal-body").html(result);
-                $("#myModal").modal();
+                type: 'GET',
+                url: '@Url.Action(actionName: "OrderStatus", controllerName: "UserProfile")',
+                dataType: "html",
+            }).done(function (result) {
+                $("#orderlist").html(result);
             });
         });
-    });
 </script>

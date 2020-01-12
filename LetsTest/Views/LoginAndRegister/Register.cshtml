@@ -210,23 +210,27 @@
     });
 </script>
 <script>
+    var email = false;
+    var phone = false;
+    var user = false;
     function Emailcheck() {
+        
         $.ajax({
             type: "post",
             url: '@Url.Action("IsEmailExist_F","LoginAndRegister")',
             data: { email: $('#textemail').val() },
             datatype: 'json',
             success: function (data) {
-                if (data == 0)
-                    $("#emailstatus").html('<font color="Green">Available </font>')
+                if (data == 0) {
+                    $("#emailstatus").html('<font color="Green">Available </font>');
+                    email = true;
+                }
+                    
                 else if (data == 1)
                     $("#emailstatus").html('<font color="#B94A4D">Already Registred </font>')
                }
         });
     }
-</script>
-
-<script>
     function UserNameCheck() {
         $.ajax({
             type: "post",
@@ -234,19 +238,16 @@
             data: { username: $('#username').val() },
             datatype: "json",
             success: function (data) {
-                if (data == 0)
-                    $('#usernamestatus').html('<font color="Green">Available</font>')
-                else if (data == 2)
-                    $('#usernamestatus').html('<font color="#B94A4D">Username Required</font>')
-                else
-                    $('#usernamestatus').html('<font color="#B94A4D">Already Registered You May Try Username Like ' + data[0] + ', ' + data[1] + ', ' + data[2] + ' </font>')
+                if (data == 0) {
+                    $('#usernamestatus').html('<font color="Green">UserName Available</font>')
+                    user = true;
+                }
+                else if(data == 1)
+                    $('#usernamestatus').html('<font color="#B94A4D">UserName already Registered</font>')
             },
             traditional: true
         });
     }
-</script>
-
-<script>
     function PhoneNumberCheck() {
         $.ajax({
             type: "post",
@@ -254,12 +255,26 @@
             data: { contact: $('#phonenumber').val() },
             datatype: "json",
             success: function (data) {
-                if (data == 0)
-                    $('#contactstatus').html('<font color="Green">Phone Number is Valid</font>')
+                if (data == 0) {
+                    $('#contactstatus').html('<font color="Green">Phone Number is Valid</font>');
+                    phone = true;
+                }                    
                 else if (data == 1)
                     $("#contactstatus").html('<font color="#B94A4D">Phone Number is already exist. </font>')
             },
             traditional: true
         });
     }
+
+    $(document).ready(function () {
+        $("#Register").click(function (event) {
+            if (phone == true && email == true && user == true) {
+                return true
+            }
+            else {
+                event.preventDefault();
+            }
+        });
+    });
+
 </script>

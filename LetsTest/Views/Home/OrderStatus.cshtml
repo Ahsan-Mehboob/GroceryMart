@@ -28,7 +28,6 @@
                         </div>
 
                     </div>
-
                 </div>
                 <div class="row" style="">
                     <div class="col-md-6">
@@ -74,24 +73,38 @@
                             </div>
 
                         }
-
-
-
-
-
                     </div>
 
                 </div>
-
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (m.ORDERSTATUS == "0")
+                        {
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 25%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <a href="@Url.Action("DeleteOrder","Home",new {id = m.ID })" class="btn btn-danger">Cancel Order</a>
+                            <a href="@Url.Action("ViewOrderDetails","Home",new {id = m.ID })" class="btn btn-success pull-right">View Order Details</a>
+                        }
+                        else if (m.ORDERSTATUS == "1")
+                        {
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <a href="@Url.Action("DeleteOrder","Home",new {id = m.ID })" class="btn btn-danger">Cancel Order</a>
+                            <a href="@Url.Action("ViewOrderDetails","Home",new {id = m.ID })" class="btn btn-success pull-right">View Order Details</a>
+                        }
+                        else
+                        {
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <a href="@Url.Action("ReOrder","Home",new {id = m.ID })" class="btn btn-warning">ReOrder</a>
+                            <a href="@Url.Action("ViewOrderDetails","Home",new {id = m.ID })" class="btn btn-success pull-right">View Order Details</a>
+                        }
+                    </div>
+                </div>
             </div>
-                
-                
-               
-                
-                
-             
-                //<h5>Store Name: </h5><p>@m.NAME</p>
-              //  <a href="#" class="btn btn-danger">Cancel Order</a>
             }
         </div>
     </div>

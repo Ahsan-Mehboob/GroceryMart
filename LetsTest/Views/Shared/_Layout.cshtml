@@ -19,7 +19,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link href="~/fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800" rel="stylesheet">
 
     <link href="~/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-    @*<link rel="stylesheet" href="~/css/shop.css" type="text/css" media="screen" property="" />*@
     <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
     <link href="~/css/easy-responsive-tabs.css" rel='stylesheet' type='text/css' />
     @*<link rel="stylesheet" type="text/css" href="~/css/jquery-ui1.css">
@@ -41,7 +40,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!-- start-smoth-scrolling -->
     <script type="text/javascript" src="~/js/move-top.js"></script>
     <script type="text/javascript" src="~/js/easing.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript">
         jQuery(document).ready(function ($) {
             $(".scroll").click(function (event) {
@@ -54,46 +52,53 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <body>
     <!-- header -->
     <div class="agileits_header">
-        <div class="w3l_offers">
-            <a href="~/Home/Index">GroceryMart.pk !</a>
+        <div class="w3l_offers" style="padding:0px 20px">
+            <a style="padding:5px" href="~/Home/Index">GroceryMart.pk !</a>
         </div>
-        <div class="w3l_search">
+        <div class="w3l_search" style="margin: .1em 0 0em .1em">
             <form>
                 <input id="text" type="text" name="text" required="" placeholder="Search a Product...">
                 <input id="search" type="button" value="">
             </form>
         </div>
-        @*<div>
-            <a href="~/Map/Index"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
-        </div>*@
 
         <div class="product_list_header">
             @if (Session["CartCounter"] == null)
             {
-                <a href="/Home/CartSummary" class=" btn-warning" id="my_btn">
-                    <a href="/Home/CartSummary" class="d-inline" id="cartItem" style="font-size:0.6rem">View Your Cart</a>
-                    <i class="fa fa-shopping-cart"></i>
-                </a>
+                <div>
+                    <a href="~/Map/Index" style="margin-right:5px; border:2px solid white;font-size:0.6rem; padding:10px;color:black;background-color:goldenrod">
+                        <i class="fa fa-map-marker" style="font-size:1rem; color:black;margin-right:5px" aria-hidden="true"></i>Nearby Stores
+                    </a>
+                    <a href="/Home/CartSummary" class="d-inline" id="cartItem" style="font-size:0.6rem;color:black; background-color:orange;border-radius:0">
+                        <i class="fa fa-shopping-cart" style="font-size:1rem; color:black;margin-right:5px" style=" color:black;"></i>
+                        View Your Cart
+                    </a>
+                </div>
             }
             else
             {
                 <a href="/Home/CartSummary" class=" btn-warning" id="my_btn">
-                    <a href="/Home/CartSummary" class="d-inline" id="cartItem" style="font-size:0.6rem">View Your Cart(@Session["CartCounter"])</a>
-                    <i class="fa fa-shopping-cart"></i>
+                    <a href="~/Map/Index" style="margin-right:5px; border:2px solid white;font-size:0.9rem; padding:8px;color:black;background-color:goldenrod">
+                        <i class="fa fa-map-marker" style="font-size:1rem; color:black;margin-right:5px" aria-hidden="true"></i>Nearby Stores
+                    </a>
+                    <a href="/Home/CartSummary" class="d-inline" id="cartItem" style="font-size:0.6rem;color:black; background-color:orange;border-radius:0">
+                        <i class="fa fa-shopping-cart" style=" color:black;"></i>
+                        View Your Cart(@Session["CartCounter"])
+                    </a>
                 </a>
             }
         </div>
 
         @*<div class="product_list_header">
-                    @if (Session["CartCounter"] == null)
-                    {
-                        @Html.ActionLink("Cart", "CheckOutdetails", "Home", routeValues: null, htmlAttributes: new { id = "cartItem" })
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Cart(" + Session["CartCounter"] + ")", "CheckOutdetails", "Home", routeValues: null, htmlAttributes:new { id = "cartItem" });
-                    }
-            </div>*@
+                @if (Session["CartCounter"] == null)
+                {
+                    @Html.ActionLink("Cart", "CheckOutdetails", "Home", routeValues: null, htmlAttributes: new { id = "cartItem" })
+                }
+                else
+                {
+                    @Html.ActionLink("Cart(" + Session["CartCounter"] + ")", "CheckOutdetails", "Home", routeValues: null, htmlAttributes:new { id = "cartItem" });
+                }
+        </div>*@
         @if (Session["UserName"] != null)
         {
 
@@ -107,6 +112,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <div class="w3ls_vegetables">
                                 <ul class="dropdown-menu drp-mnu">
                                     <li><a href="~/UserProfile/Profiles">Dashboard</a></li>
+                                    <li><a href="~/Map/Index">Nearby Stores &nbsp;<i class="fa fa-map-marker" aria-hidden="true"></i></a></li>
                                     <li><a href="~/Home/OrderStatus">My Orders</a></li>
                                     <li><a href="~/LoginAndRegister/Logout">Logout</a></li>
                                 </ul>
@@ -324,13 +330,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     $("#search").click();
                 }
             });
-            $('#search').click(function () {
-                var cid = $("#text").val();
+            $('#search').click(function (e) {
+               
+                if ($('#text').val() === '') {
+                    alert('Please Enter something to search');
+                    e.preventDefault();
+                } else {
+ var cid = $("#text").val();
                 $.ajax(
                     {
                         url: "/Products/Search/" + cid
                     })
                 window.location.href = '@Url.Action("Search","Products",new { id = "CC"})'.replace("CC", cid);
+                }
+               
             });
         });
     </script>
@@ -349,8 +362,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 url: '/Home/Index',
                 success: function (data) {
                     if (data.Success) {
-                        //$("#cartitem").text("Cart("+data.Counter+")");
-
                         $("#cartItem").text('View Your Cart(' + data.Counter + ')');
                     }
                 },

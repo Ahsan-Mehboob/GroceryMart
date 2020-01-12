@@ -5,7 +5,7 @@ using System.Web;
 
 namespace LetsTest.Models
 {
-    public class Search
+    public class filter
     {
         public int ID { get; set; }
         public string NAME { get; set; }

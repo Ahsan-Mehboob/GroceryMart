@@ -9,88 +9,93 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="w3l_banner_nav_left">
-    <div class="search-hotel">
-        <h3 class="agileits-sear-head">Search Here..</h3>
-        <form action="#" method="post">
-            <input type="search" placeholder="Product name..." name="search" required="">
-            <input type="submit" value=" ">
-        </form>
-    </div>
-    <!-- price range -->
-    <div class="range">
-        <h3 class="agileits-sear-head">Price range</h3>
-        <ul class="dropdown-menu6">
-            <li>    
-                <div id="slider-range"></div>
-                <input type="text" id="amount" style="border: 0; color: #ffffff; font-weight: normal;" />
-            </li>
-        </ul>
-    </div>
-    <!-- //price range -->
-    <!-- discounts -->
-    <div class="left-side">
-        <h3 class="agileits-sear-head">Discount</h3>
-        <ul>
-            <li>
-                <input type="checkbox" class="checked">
-                <span class="span">5% or More</span>
-            </li>
-            <li>
-                <input type="checkbox" class="checked">
-                <span class="span">10% or More</span>
-            </li>
-            <li>
-                <input type="checkbox" class="checked">
-                <span class="span">20% or More</span>
-            </li>
-            <li>
-                <input type="checkbox" class="checked">
-                <span class="span">30% or More</span>
-            </li>
-            <li>
-                <input type="checkbox" class="checked">
-                <span class="span">50% or More</span>
-            </li>
-            <li>
-                <input type="checkbox" class="checked">
-                <span class="span">60% or More</span>
-            </li>
-        </ul>
-    </div>
-    <!-- //discounts -->
-</div>
+<div>
+    <div class="w3l_banner_nav_left" style="margin-top:11%;padding:10px;background:#f1f2f6;height:100vh">
+        <div class="dropdown d-inline" style="padding-top:20px;margin-top:20px">
+            <h5 style="color:#e67e22">Sort By Price</h5>
+            <button class="btn btn-success dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">
+                SELECT
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                <li>@Html.ActionLink("Price high to low", "Productslist", new { sort = ViewBag.SortPriceParameter, searchBy = Request.QueryString["searchBy"], Search = Request["Search"] })</li>
+                <li>@Html.ActionLink("Price low to high", "Productslist", new { sort = ViewBag.SortPriceParameter, searchBy = Request.QueryString["searchBy"], Search = Request["Search"] })</li>
+            </ul>
+        </div>
+        <div class="dropdown " style="margin-top:10px;border-top:2px solid black;padding-top:20px">
+            <h5 style="color:#e67e22">Filter by Store Name</h5>
+            <button class="btn btn-success dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                SELECT
+            </button>
 
+            @using (Html.BeginForm("Productslist", "Products", FormMethod.Get))
+            {
+                <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                    @for (int i = 0; i < ViewBag.store.Count; i++)
+                    {
+                        <input class="dropdown-item" type="submit" name="storename" value="@ViewBag.store[i]" />
+
+                    }
+                </div>
+
+
+                @*<div>
+                        <ul>
+                            <li>
+                                <input type="submit" name="storename" value="@ViewBag.store[i]" />
+                            </li>
+                        </ul>
+                    </div>*@
+
+                @*<b>Search By:</b> @Html.RadioButton("searchBy", "StoreName", true)<text>Store Name</text>
+                    @Html.RadioButton("searchBy", "ProductName")<text>Product Name</text><br />
+                    @Html.TextBox("Search")<input type="submit" value="Search" />*@
+            }
+        </div>
+        <div style="border-top:2px solid black;margin-top:30px;padding-top:20px">
+            <h5 style="color:#e67e22">Filter by Price Range</h5>
+            <table style="width:20%">
+                <tr>
+                    @using (Html.BeginForm("Productslist", "Products", FormMethod.Get))
+                    {
+                        <td></td>
+                        <td>
+                            <div>Min Price<input id="minprice" type="number" style="border:none;outline:none" name="MinPrice" readonly="readonly" /></div>
+                            <div>  Max Price<input id="maxprice" type="number" style="border:none;outline:none" name="MaxPrice" readonly="readonly" /></div>
+                            <div id="slider" style="margin-top:20px"></div>
+
+                            <div>
+                                <button type="submit" class="btn btn-success" style="margin-top:10px">Filter</button>
+                            </div>
+
+                        </td>
+
+                        @*<td>Max Price<input id="maxprice" type="number" name="MaxPrice" readonly="readonly" /></td>*@
+
+                    }
+                </tr>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
 <div class="w3l_banner_nav_right">
-    <div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_sub">
+
+    <div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_sub" style="float:right;width:80%">
         <h3>Products</h3>
         <div class="" style="display:flex;flex-direction:row;justify-content:space-between;align-items:center">
-            <div class="d-inline">
-                @using (Html.BeginForm("Productslist", "Products", FormMethod.Get))
-                {
-                    <b>Search By:</b> @Html.RadioButton("searchBy", "StoreName", true)<text>Store Name</text>
-                    @Html.RadioButton("searchBy", "ProductName")<text>Product Name</text><br />
-                    @Html.TextBox("Search")<input type="submit" value="Search" />
-                }
-            </div>
-            <div class="dropdown d-inline">
-                <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">
-                    SortBy Price
-                </button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                    <li>@Html.ActionLink("Price high to low", "Productslist", new { sort = ViewBag.SortPriceParameter, searchBy = Request.QueryString["searchBy"], Search = Request["Search"] })</li>
-                    <li>@Html.ActionLink("Price low to high", "Productslist", new { sort = ViewBag.SortPriceParameter, searchBy = Request.QueryString["searchBy"], Search = Request["Search"] })</li>
-                </ul>
-            </div>
+
+
         </div>
 
         @if (Model.Count() == 0)
         {
-            <h4>Nothing found to your search criteria.</h4>
+            <h4 style="text-align:center;margin-top:12%">Nothing found to your search criteria.</h4>
         }
         else
         {
-            <div class="w3ls_w3l_banner_nav_right_grid1" style="padding:60px">
+            <div class="w3ls_w3l_banner_nav_right_grid1" style="">
                 @foreach (var prod in Model)
                 {
                     <div class="col-md-3 w3ls_w3l_banner_left">
@@ -101,14 +106,16 @@
                                 </div>
                                 <div class="agile_top_brand_left_grid1">
                                     <figure>
+
                                         <div class="snipcart-item block">
                                             <div id="prod" class="snipcart-thumb">
-                                                <a href="~/Single/SingleProduct/@prod.ID" value="@prod.ID" id="@prod.ID"><img src="@Url.Content(prod.IMAGE1)" alt=" " class="img-responsive img-resize" /></a>
-                                                <p style="background-color:blueviolet; color:whitesmoke; border-radius:20px; text-align:center; width:75%; font-weight:400px; margin-left:25px">@prod.STORE</p>
+                                                <a href="~/Single/SingleProduct/@prod.ID" value="@prod.ID" id="@prod.ID">
+                                                    <img src="@Url.Content(prod.IMAGE1)" style="    max-height: 100px;min-height: 100px;" alt=" " class="img-responsive img-resize" />
+                                                </a>
+                                                <p style="background-color:blueviolet; color:whitesmoke; text-align:center;border-radius:15px">@prod.STORE</p>
                                                 <p style="font-weight:bold; font-size: 1.0rem">@prod.NAME</p>
                                                 @if (prod.DISCOUNT != null)
                                                 {
-
                                                     var data = prod.DISCOUNT;
                                                     prod.percentage = Convert.ToDecimal(data);
                                                     prod.DESC = (prod.percentage / 100) * (prod.PRICE);
@@ -134,9 +141,11 @@
                 <div class="clearfix"> </div>
             </div>
         }
+        @Html.PagedListPager(Model, page => Url.Action("Productslist", "Products", new { page, storename = Request.QueryString["storename"], MinPrice = Request.QueryString["MinPrice"], MaxPrice = Request.QueryString["MaxPrice"] }))
     </div>
-    @Html.PagedListPager(Model, page => Url.Action("Productslist", "Products", new { page, searchBy = Request.QueryString["searchBy"], Search = Request.QueryString["Search"], sort = Request["sort"] }))
+
 </div>
+
 <div class="clearfix"></div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -147,5 +156,99 @@
                 url: '/Single/SingleProduct/' + this.id
             })
         })
+    });
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaqHbH8JKxbLNmV9dbUhCJsTS3sjOvoeE&callback=initMap"
+        type="text/javascript"></script>
+<script type="text/javascript">
+    x = navigator.geolocation;
+    x.getCurrentPosition(initMap);
+    function initMap(position) {
+        var marker = [];
+        var myLat = position.coords.latitude;
+        var myLong = position.coords.longitude;
+
+        var coords = new google.maps.LatLng(myLat, myLong);
+        $("#btnmap").click(function () {
+            debugger;
+            var radius = 10;
+            $.get("@Url.Action("GetAllLocations", "Map")", function (stores, status) {
+                var contentString = [];
+                var infowindow = [];
+                for (var i = 0; i < stores.length; i++) {
+                    var distance_from_location = distance(position.coords.latitude, position.coords.longitude, parseFloat(stores[i].LATITUDE), parseFloat(stores[i].LONGITUDE), "K");
+                    if (!isNaN(distance_from_location)) {
+                        if (distance_from_location < radius) {
+                            marker.push(stores[i].ID);
+                        }
+                    }
+                }
+                debugger;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/Products/SearchByDistance",
+                    data: JSON.stringify({
+                        STORE_ID: marker,
+                    }),
+                dataType: "json",
+                    success: function (response) {
+
+                    },
+                error: function (response) {
+
+                }
+            });
+
+            });
+        });
+    }
+    function distance(lat1, lon1, lat2, lon2, unit) {
+        if ((lat1 == lat2) && (lon1 == lon2)) {
+            return 0;
+        }
+        else {
+            var radlat1 = Math.PI * lat1 / 180;
+            var radlat2 = Math.PI * lat2 / 180;
+            var theta = lon1 - lon2;
+            var radtheta = Math.PI * theta / 180;
+            var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+            if (dist > 1) {
+                dist = 1;
+            }
+            dist = Math.acos(dist);
+            dist = dist * 180 / Math.PI;
+            dist = dist * 60 * 1.1515;
+            if (unit == "K") { dist = dist * 1.609344 }
+            if (unit == "N") { dist = dist * 0.8684 }
+            return dist;
+        }
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var divslider = $("#slider");
+
+        divslider.slider({
+            range: true,
+            min: 0,
+            max: 10000,
+            values: [0, 1],
+            slide: function (event, ui) {
+                $('#minprice').val(divslider.slider('values', 0));
+                $('#maxprice').val(divslider.slider('values', 1));
+            },
+            stop: function (event, ui) {
+                $('#minprice').val(ui.values[0]);
+                $('#maxprice').val(ui.values[1]);
+            }
+        });
+        $("#slider").animate({
+            backgroundColor: "blue",
+            width: 200
+        }, 1000);
     });
 </script>

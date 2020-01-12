@@ -154,22 +154,31 @@
     <Compile Include="Models\AddtoCart.cs" />
     <Compile Include="Models\AlertModel.cs" />
     <Compile Include="Models\CartSummaryToCheckout.cs" />
+    <Compile Include="Models\Chat.cs" />
+    <Compile Include="Models\DeleteShippingAddress.cs" />
     <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\filter.cs" />
+    <Compile Include="Models\MarkerFilter.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\IPClass.cs" />
     <Compile Include="Models\ListCategories.cs" />
     <Compile Include="Models\Lists.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\OrderDetails.cs" />
     <Compile Include="Models\OrderStatus.cs" />
     <Compile Include="Models\ProductsList.cs" />
     <Compile Include="Models\PromoCode.cs" />
+    <Compile Include="Models\PromoCode1.cs" />
+    <Compile Include="Models\Reviews.cs" />
     <Compile Include="Models\Search.cs" />
+    <Compile Include="Models\SearchDemo.cs" />
     <Compile Include="Models\ShippingAddress.cs" />
     <Compile Include="Models\ShoppingCartItems.cs" />
     <Compile Include="Models\Signup.cs" />
     <Compile Include="Models\SingleProductDetails.cs" />
     <Compile Include="Models\StoreLocation.cs" />
     <Compile Include="Models\SubCategory.cs" />
+    <Compile Include="Models\TakeReview.cs" />
     <Compile Include="Models\UserLoginList.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -185,9 +194,12 @@
     <Content Include="css\bootstrap.css" />
     <Content Include="css\creditly.css" />
     <Content Include="css\easy-responsive-tabs.css" />
+    <Content Include="css\FeedbackReview.css" />
     <Content Include="css\flexslider.css" />
     <Content Include="css\font-awesome.css" />
+    <Content Include="css\RatingStars.css" />
     <Content Include="css\style.css" />
+    <Content Include="css\StyleSheet1.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
@@ -203,7 +215,9 @@
     <Content Include="Images\4.jpg" />
     <Content Include="Images\5.jpg" />
     <Content Include="Images\6.jpg" />
+    <Content Include="Images\85362512-user-icon-male-avatar-in-business-suit-businessman-flat-icon-man-in-business-suit-avatar-of-business.jpg" />
     <Content Include="Images\arrow.png" />
+    <Content Include="Images\banner_13.jpg" />
     <Content Include="Images\Beverages0 %281%29.jpg" />
     <Content Include="Images\Beverages0 %282%29.jpg" />
     <Content Include="Images\Beverages0 %283%29.jpg" />
@@ -287,6 +301,7 @@
     <Content Include="Images\seafood %282%29.jpg" />
     <Content Include="Images\seafood %283%29.jpg" />
     <Content Include="Images\seafood %284%29.jpg" />
+    <Content Include="Images\shutterstock_140952511.jpg" />
     <Content Include="Images\snacks0 %281%29.jpg" />
     <Content Include="Images\snacks0 %282%29.jpg" />
     <Content Include="Images\snacks0 %283%29.jpg" />
@@ -390,10 +405,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Events.cshtml" />
-    <Content Include="Views\Home\FaQs.cshtml" />
     <Content Include="Views\Home\Mail.cshtml" />
-    <Content Include="Views\Home\Payment.cshtml" />
-    <Content Include="Views\Home\Privacy.cshtml" />
     <Content Include="Views\Home\Services.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
@@ -424,6 +436,11 @@
     <Content Include="Views\Home\AddAddress.cshtml" />
     <Content Include="Views\Home\CartSummary.cshtml" />
     <Content Include="Views\Map\Index.cshtml" />
+    <Content Include="Views\Products\View.cshtml" />
+    <Content Include="Views\UserProfile\OrderStatus.cshtml" />
+    <Content Include="Views\Home\ViewOrderDetails.cshtml" />
+    <Content Include="Views\Products\SearchByDistance.cshtml" />
+    <Content Include="Views\Products\NearByFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,24 +18,30 @@ namespace LetsTest.Controllers
         public JsonResult GetAllLocations()
         {
             List<StoreLocation> stores = new List<StoreLocation>();
-
-            using (var client = new HttpClient())
+            try
             {
-                client.BaseAddress = new Uri(baseurl);
-                //HTTP GET
-                var responseTask = client.GetAsync("api/StoresApi/ListStore");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                using (var client = new HttpClient())
                 {
-                    var readTask = result.Content.ReadAsAsync<List<StoreLocation>>();
-                    readTask.Wait();
+                    client.BaseAddress = new Uri(baseurl);
+                    //HTTP GET
+                    var responseTask = client.GetAsync("api/StoresApi/ListStore");
+                    responseTask.Wait();
 
-                    stores = readTask.Result;
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<List<StoreLocation>>();
+                        readTask.Wait();
+
+                        stores = readTask.Result;
+                    }
                 }
+                return Json(stores, JsonRequestBehavior.AllowGet);
             }
-            return Json(stores, JsonRequestBehavior.AllowGet);
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

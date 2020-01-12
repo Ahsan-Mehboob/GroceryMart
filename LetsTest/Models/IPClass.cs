@@ -9,7 +9,7 @@ namespace LetsTest.Models
     {
         public static class Ip
         {
-            public const string ip = "http://10.135.34.33/";
+            public const string ip = "http://192.168.137.1/";
         }
     }
 }

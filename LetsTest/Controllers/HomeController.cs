@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Net.Http;
 using LetsTest.Models;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace LetsTest.Controllers
 {
@@ -78,9 +81,20 @@ namespace LetsTest.Controllers
                 add.ImgPath = product.IMAGE1;
                 add.ItemName = product.NAME;
                 add.Quantity = 1;
-                add.Total = product.PRICE;
-                add.DESC_Price = product.DESC_Price;
-                add.UnitPrice = product.PRICE;
+                if(product.DISCOUNT != null)
+                {
+                    decimal discount = Convert.ToDecimal(product.DISCOUNT);
+                    var percentage = (discount / 100)*product.PRICE;
+                    int Des = Convert.ToInt32(product.PRICE - percentage);
+                    add.UnitPrice = Des;
+                    add.Total = Des;
+                }
+                else
+                {
+                    add.Total = product.PRICE;
+                    add.UnitPrice = product.PRICE;
+                }
+                
                 add.StoreName = product.SNAME;
                 addtocart.Add(add);
             }
@@ -112,7 +126,6 @@ namespace LetsTest.Controllers
             order.ShippingID = Convert.ToInt32(Session["AddressId"]);
             order.CreatedAt = DateTime.Now;
             order.UpdatedAt = DateTime.Now;
-            order.STORE_ID = 1203;
             order.OrderStatus = 0;
             order.TotalShippingCharges = 200;
             order.UID = Convert.ToInt32(Session["UserId"]);
@@ -148,34 +161,36 @@ namespace LetsTest.Controllers
                 }
 
         }
-        public ActionResult OrderStatus()
+        public async Task<ActionResult> OrderStatus()
         {
             Session["CartCounter"] = null;
             List<OrderStatus> ords = new List<OrderStatus>();
             var ordstat = Session["UserId"];
             using (var client = new HttpClient())
             {
+                //passing service base url  
                 client.BaseAddress = new Uri(baseurl);
-                try
-                {
-                    var responseTask = client.GetAsync("api/OrdersApi/AllOrderInformation?id=" + ordstat);
-                    responseTask.Wait();
 
-                    var result = responseTask.Result;
-                    if (result.IsSuccessStatusCode)
+                client.DefaultRequestHeaders.Clear();
+                //define request data format  
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage prod = await client.GetAsync("api/OrdersApi/AllOrderInformation?id=" + ordstat);
+
+                //checking the response is successful or not which is sent using httpclient  
+                if (prod.IsSuccessStatusCode)
+                {
+                    //storing the response details recieved from web api   
+                    var prodlist = await prod.Content.ReadAsStringAsync();
+                    var settings = new JsonSerializerSettings
                     {
-                        var readTask = result.Content.ReadAsAsync<List<OrderStatus>>();
-                        readTask.Wait();
-
-                        ords = readTask.Result;
-                    }
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ords = JsonConvert.DeserializeObject<List<OrderStatus>>(prodlist, settings);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Exception Occured" + ex);
-                }
-                return View(ords);
             }
+            return View(ords);
         }
 
         public ActionResult AddAddress()
@@ -244,20 +259,96 @@ namespace LetsTest.Controllers
                 return View(address);
             }
         }
+        public ActionResult DeleteOrder(int id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseurl);
+                try
+                {
+                    var responseTask = client.GetAsync("api/OrdersApi/DeleteOrder?id=" + id);
+                    responseTask.Wait();
+
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("OrderStatus");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception Occured" + ex);
+                }
+                return RedirectToAction("OrderStatus");
+            }
+        }
+        public ActionResult ReOrder(int id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseurl);
+                try
+                {
+                    var responseTask = client.GetAsync("api/OrdersApi/ReOrder?orderid=" + id);
+                    responseTask.Wait();
+
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("OrderStatus");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception Occured" + ex);
+                }
+                return RedirectToAction("OrderStatus");
+            }
+        }
+        public ActionResult ViewOrderDetails(int id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseurl);
+                try
+                {
+                    var responseTask = client.GetAsync("api/OrdersApi/CheckOrderDetails?orderid=" + id);
+                    responseTask.Wait();
+
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<List<OrderDetails>>();
+                        readTask.Wait();
+
+                        var OrderDetail = readTask.Result;
+                        return View(OrderDetail);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception Occured" + ex);
+                }
+                return RedirectToAction("OrderStatus");
+            }
+        }
         public ActionResult CartSummary()
         {
             return View();
         }
 
-        public ActionResult VoucherCode(string promo)
+        public ActionResult VoucherCode(string id)
         {
             PromoCode proms = new PromoCode();
+            PromoCode1 proms1 = new PromoCode1();
+            proms1.promo = id;
+            proms1.UID = Convert.ToInt32(Session["UserId"]);
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(baseurl);
 
                 //HTTP POST
-                var responseTask = client.GetAsync("api/PromoApi/GetPromo?promo=" + promo);
+                var responseTask = client.PostAsJsonAsync<PromoCode1>("api/StoresApi/GetPromo/", proms1);
                 responseTask.Wait();
 
                 var result = responseTask.Result;
@@ -265,10 +356,10 @@ namespace LetsTest.Controllers
                 {
                     var readTask = result.Content.ReadAsAsync<PromoCode>();
                     readTask.Wait();
-
                     proms = readTask.Result;
+                    return Json(proms, JsonRequestBehavior.AllowGet);
                 }
-                return View();
+                return Json(0,JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -282,22 +373,7 @@ namespace LetsTest.Controllers
             return View();
         }
 
-        public ActionResult FaQs()
-        {
-            return View();
-        }
-
         public ActionResult Mail()
-        {
-            return View();
-        }
-
-        public ActionResult Payment()
-        {
-            return View();
-        }
-
-        public ActionResult Privacy()
         {
             return View();
         }

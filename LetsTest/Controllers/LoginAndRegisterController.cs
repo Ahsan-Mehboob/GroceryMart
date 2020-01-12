@@ -26,7 +26,7 @@ namespace LetsTest.Controllers
             data.CREATED_AT = DateTime.Now.Date;
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(baseurl);
+                client.BaseAddress = new Uri(baseurl);                
 
                 var postTask = client.PostAsJsonAsync<Signup>("/api/UsersApi/Create", data);
                 postTask.Wait();
@@ -74,10 +74,11 @@ namespace LetsTest.Controllers
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<string[]>();
+                    var readTask = result.Content.ReadAsAsync<int>();
                     readTask.Wait();
                     var list = readTask.Result;
                     return Json(list, JsonRequestBehavior.AllowGet);
+    
                 }
                 return Json(0, JsonRequestBehavior.AllowGet);
             }

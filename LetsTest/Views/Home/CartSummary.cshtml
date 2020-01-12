@@ -13,10 +13,9 @@
 {
     if (Session["CartItem"] == null)
     {
-        <div style="margin-top:10%">
-            <h4>Your Cart is Empty.</h4>
+        <div style="display:flex; justify-content:center;align-items:center;padding:20%">
+            <h4>Oops. !!! Your Cart is Empty.</h4>
         </div>
-
     }
     else
     {
@@ -34,22 +33,33 @@
                         Total = Convert.ToInt32(@Total + lineTotal);
 
                         TotalQ += prod.Quantity;
+                        
+                    <div class="list-group">
+                        
+                        <div class="list-group-item list-group-item-action ">
+                            
+                            <div class="d-flex w-100 justify-content-between">
 
-                        <div class="list-group">
-                            <div class="list-group-item list-group-item-action ">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <input class="mb-1" name="ItemName" value="@prod.ItemName" style="text-align:center; background-color:gray; border:none; color:white" />
-                                    <div>
-                                        <button type="button" class="btn btn-dark btn-sm btn-clickminus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">-</button>
-                                        <input id="quant" style="width:30px; border-radius:50%; text-align:center; background-color:gray; border:none; color:white" name="Quantity" type="text" placeholder="@prod.Quantity" value="@prod.Quantity" />
-                                        <button type="button" class="btn btn-dark btn-sm btn-clickplus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">+</button>
+                                <div class="d-flex flex-row">
+                                    <img src="@prod.ImgPath" class="img-thumbnail rounded mr-3" style="width:50px;height:50px" />
+                                    <div  >
+                                        <input class="mb-1 d-block" name="ItemName"readonly value="@prod.ItemName" style="outline:none;background-color:transparent;font-weight:bold;  border:none; color:black" />
+                                        <input class="mb-1" name="StoreName" readonly value="@prod.StoreName" style="outline:none;background-color:transparent;font-weight:bold;  border:none; color:black"  />
                                     </div>
+                                   
                                 </div>
-                                <input class="mb-1" name="StoreName" value="@prod.StoreName" style="text-align:center; background-color:gray; border:none; color:white" />
-                                <input id="linestotal" name="lineTotal" class="mb-1 value" style="font-weight:bold; border:none; width:70px" value="Rs. @lineTotal" />
-                                @Html.Hidden("price", prod.UnitPrice, new { @id = "price" })
+                                <input id="linestotal" readonly  name="lineTotal" class="mb-1 value" style="font-weight:bold;color:black; border:none;outline:none; width:70px" value="Rs. @lineTotal" />
+                                <div>
+                                    <button type="button" class="btn btn-outline-primary btn-sm btn-clickminus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">-</button>
+                                    <input id="quant"readonly  style="width:30px; border-radius:50%; text-align:center; background-color:transparent; border:none;outline:none;font-size:1.2rem; color:black;font-weight:bold" name="Quantity" type="text" placeholder="@prod.Quantity" value="@prod.Quantity" />
+                                    <button type="button" class="btn btn-outline-primary btn-sm btn-clickplus" style="font-weight: bold; font-size: 16px;border-radius: 50%;">+</button>
+                                </div>
                             </div>
+                          
+    
+                            @Html.Hidden("price", prod.UnitPrice, new { @id = "price" })
                         </div>
+                    </div>
                         @Html.Hidden("Product_ID", @prod.ItemId);
                     }
                     <a href="#" class="list-group-item list-group-item-action ">
@@ -69,7 +79,7 @@
         <div class="d-flex align-items-end justify-content-end">
             <button type="submit" class="btn btn-success btn-block  check-out" style="margin-right:10%;width:25%;">Continue To CheckOut</button>
         </div>
-        
+
         <br />
     }
 }
@@ -81,8 +91,6 @@
 
 <script>
     $('.check-out').on('click', function (e) {
-        
-        debugger;
         var total = $('#totall').val();
         if (total == 0) {
             $(this).remove();
@@ -90,8 +98,8 @@
         }
         return true
     })
-   
-    
+
+
     $('.btn-clickplus').on('click', function () {
         var q = $(this).parent().find('#quant').val();
         $(".btn-clickminus").attr("disabled", false);
@@ -114,11 +122,10 @@
             q--;
         }
         else {
-            debugger;
             //$(this).attr("disabled", true);
             $(this).closest('.list-group-item').remove();
             q = "0";
-            
+
             $(this).parent().find('#quant').val(q);
         }
         $(this).parent().find('#quant').val(q);
